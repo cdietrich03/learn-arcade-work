@@ -1,5 +1,5 @@
 """
-This is a sample program to show how to draw using the Python programming
+This is a program to show how to draw using the Python programming
 language and the Arcade library
 """
 
@@ -63,10 +63,13 @@ arcade.draw_circle_filled(180, 270, 30, arcade.color.DARTMOUTH_GREEN)
 arcade.draw_circle_filled(250, 270, 30, arcade.color.DARTMOUTH_GREEN)
 arcade.draw_triangle_filled(485, 225, 535, 225, 510, 300, arcade.color.DARTMOUTH_GREEN)
 
-# Draw stars
-arcade.draw_circle_filled(110, 500, 5, arcade.color.EGGSHELL)
-arcade.draw_circle_filled(150, 475, 5, arcade.color.EGGSHELL)
-arcade.draw_circle_filled(170, 490, 5, arcade.color.EGGSHELL)
+#Draw the moon
+arcade.draw_circle_filled(100, 500, 30, arcade.color.DARK_GRAY)
+arcade.draw_circle_filled(105, 504, 6, arcade.color.GRAY)
+arcade.draw_circle_filled(87, 490, 6, arcade.color.GRAY)
+arcade.draw_circle_filled(107, 483, 6, arcade.color.GRAY)
+arcade.draw_circle_filled(90, 520, 6, arcade.color.GRAY)
+arcade.draw_circle_filled(115, 520, 6, arcade.color.GRAY)
 
 # Finish the drawing
 arcade.finish_render()
