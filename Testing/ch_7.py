@@ -1,4 +1,4 @@
-# equal sign is an operator (spaces necessary)
+# equal sign is an assignment operator (spaces necessary)
 # Highlight, shift, double quote
 x = 5
 print(x)
@@ -40,7 +40,7 @@ print(x)
 x = 15 // 10
 print(x)
 
-# remainders
+# remainders (modulus)
 x = 15 % 11
 print(x)
 
