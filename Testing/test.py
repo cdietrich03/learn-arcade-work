@@ -1,3 +1,4 @@
+
 # print("Most exciting class ever!!!")
 # print("I want to sleep \\\\hi\\\\")
 # print("What does\ndo? It\nis weird.")
@@ -19,7 +20,13 @@
 # Boolean variables are true and false
 
 
-import random
 
-my_number = random.random()
-print(my_number * 9 + 1)
+print("Most exciting class ever!!!")
+print("I want to sleep \\\\hi\\\\")
+print("What does\ndo? It\nis weird.")
+print("""Wow
+the professor
+has
+gone
+crazy""")
+
