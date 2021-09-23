@@ -74,28 +74,28 @@ def main():
                 print("No cans of spinach available!")
 
         # Popeye is getting hungry
-        if not done and user_thirst > 4 and user_thirst <= 6:
+        if user_thirst > 4 and user_thirst <= 6:
             print("You are hungry!")
-        elif not done and user_thirst > 6:
+        elif user_thirst > 6:
             done = True
             print("You died of hunger!")
 
         # The camel is getting tired
-        elif not done and camel_tired > 5 and camel_tired <= 8:
+        elif camel_tired > 5 and camel_tired <= 8:
             print("Your camel is getting tired!")
-        elif not done and camel_tired > 8:
+        elif camel_tired > 8:
             done = True
             print("Your camel is dead!")
 
         # Bluto is getting close to Popeye
-        elif not done and distance_bluto_traveled >= user_total_miles_traveled:
+        elif distance_bluto_traveled >= user_total_miles_traveled:
             done = True
             print("Bluto caught you and the camel!")
-        elif not done and distance_bluto_traveled >= (user_total_miles_traveled - 15):
+        elif distance_bluto_traveled >= (user_total_miles_traveled - 15):
             print("Bluto is getting close!")
 
         # The user won the game
-        elif not done and user_total_miles_traveled >= 200:
+        elif user_total_miles_traveled >= 200:
             done = True
             print("You successfully stole the camel and won the game!")
 
