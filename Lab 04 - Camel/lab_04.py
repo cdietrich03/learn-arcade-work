@@ -13,6 +13,7 @@ def main():
 
     done = False
     while not done:
+        print()
         print("A. Eat more spinach.")
         print("B. Ahead moderate speed.")
         print("C. Ahead full speed.")
@@ -20,6 +21,9 @@ def main():
         print("E. Status check.")
         print("Q. Quit.")
         user_choice = input("What is your choice? ")
+
+        # import random numbers
+        import random
 
         # Choice of quitting
         if user_choice.upper() == "Q":
@@ -34,7 +38,6 @@ def main():
 
         # Choice of stop for the night
         elif user_choice.upper() == "D":
-            import random
             camel_tired = 0
             print("Camel is happy!")
             print("Popeye is rested!")
@@ -43,7 +46,6 @@ def main():
 
         # Choice of full speed
         elif user_choice.upper() == "C":
-            import random
             user_traveled_full_speed = random.randrange(10, 21)
             print("You traveled", user_traveled_full_speed, "miles.")
             user_total_miles_traveled = user_total_miles_traveled + user_traveled_full_speed
@@ -52,10 +54,15 @@ def main():
             camel_tired = camel_tired + camel_tired_full_speed
             bluto_traveled_full_speed = random.randrange(7, 18)
             distance_bluto_traveled = distance_bluto_traveled + bluto_traveled_full_speed
+            if not done:
+                if random.randrange(20) == 0:
+                    print("You found a spinach farm!")
+                    user_thirst = 0
+                    camel_tired = 0
+                    cans_of_spinach = 3
 
         # Choice of moderate speed
         elif user_choice.upper() == "B":
-            import random
             user_traveled_moderate_speed = random.randrange(7, 13)
             print("You traveled", user_traveled_moderate_speed, "miles.")
             camel_tired = camel_tired + 1
@@ -63,6 +70,12 @@ def main():
             bluto_traveled_moderate_speed = random.randrange(7, 20)
             user_total_miles_traveled = user_total_miles_traveled + user_traveled_moderate_speed
             distance_bluto_traveled = distance_bluto_traveled + bluto_traveled_moderate_speed
+            if not done:
+                if random.randrange(20) == 0:
+                    print("You found a spinach farm!")
+                    user_thirst = 0
+                    camel_tired = 0
+                    cans_of_spinach = 3
 
         # Choice of eating spinach
         elif user_choice.upper() == "A":
@@ -73,34 +86,35 @@ def main():
             elif cans_of_spinach <= 0:
                 print("No cans of spinach available!")
 
-        # Popeye is getting hungry
-        if user_thirst > 4 and user_thirst <= 6:
-            print("You are hungry!")
-        elif user_thirst > 6:
-            done = True
-            print("You died of hunger!")
-
-        # The camel is getting tired
-        elif camel_tired > 5 and camel_tired <= 8:
-            print("Your camel is getting tired!")
-        elif camel_tired > 8:
-            done = True
-            print("Your camel is dead!")
-
         # Bluto is getting close to Popeye
-        elif distance_bluto_traveled >= user_total_miles_traveled:
-            done = True
-            print("Bluto caught you and the camel!")
-        elif distance_bluto_traveled >= (user_total_miles_traveled - 15):
-            print("Bluto is getting close!")
+        if not done:
+            if distance_bluto_traveled >= user_total_miles_traveled:
+                done = True
+                print("Bluto caught you and the camel!")
+            elif distance_bluto_traveled >= (user_total_miles_traveled - 15):
+                print("Bluto is getting close!")
 
         # The user won the game
-        elif user_total_miles_traveled >= 200:
-            done = True
-            print("You successfully stole the camel and won the game!")
+        if not done:
+            if user_total_miles_traveled >= 200:
+                done = True
+                print("You successfully stole the camel and won the game!")
 
+        # Popeye is getting hungry
+        if not done:
+            if user_thirst > 4 and user_thirst <= 6:
+                print("You are hungry!")
+            elif user_thirst > 6:
+                done = True
+                print("You died of hunger!")
 
-# figure out how to break the code so that it doesn't give other statements after winning or losing
-# figure out the random chance
+        # The camel is getting tired
+        if not done:
+            if camel_tired > 5 and camel_tired <= 8:
+                print("Your camel is getting tired!")
+            elif camel_tired > 8:
+                done = True
+                print("Your camel is dead!")
+
 
 main()
