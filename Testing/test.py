@@ -20,4 +20,3 @@
 # Running total
 # Boolean variables are true and false
 
-
