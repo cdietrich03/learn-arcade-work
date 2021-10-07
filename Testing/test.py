@@ -19,5 +19,15 @@
 # Running total
 # Boolean variables are true and false
 
+# lists use brackets, functions use parenthesis
 
+
+# my_list = [4, 2, 56, 2, 0]
+# positive_outlook_list = []
+# for item in my_list:
+#     if item > 0:
+#         positive_outlook_list.append(item)
+
+
+# print(positive_outlook_list)
 
