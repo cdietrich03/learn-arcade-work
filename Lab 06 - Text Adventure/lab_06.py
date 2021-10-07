@@ -209,6 +209,7 @@ def main():
             done = True
             print("You have quit the best game ever!")
 
+        # The computer will not take this direction
         else:
             print()
             print("Try a different direction!")
