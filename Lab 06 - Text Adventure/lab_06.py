@@ -172,6 +172,7 @@ def main():
         if user_choice.lower() == "north" or user_choice.lower() == "n":
             next_room = room_list[current_room].north
             if next_room is None:
+                print()
                 print("You can't go that way!")
             else:
                 current_room = next_room
@@ -180,6 +181,7 @@ def main():
         elif user_choice.lower() == "south" or user_choice.lower() == "s":
             next_room = room_list[current_room].south
             if next_room is None:
+                print()
                 print("You can't go that way!")
             else:
                 current_room = next_room
@@ -188,6 +190,7 @@ def main():
         elif user_choice.lower() == "east" or user_choice.lower() == "e":
             next_room = room_list[current_room].east
             if next_room is None:
+                print()
                 print("You can't go that way!")
             else:
                 current_room = next_room
@@ -196,6 +199,7 @@ def main():
         elif user_choice.lower() == "west" or user_choice.lower() == "w":
             next_room = room_list[current_room].west
             if next_room is None:
+                print()
                 print("You can't go that way!")
             else:
                 current_room = next_room
@@ -204,6 +208,10 @@ def main():
         elif user_choice.lower() == "quit" or user_choice.lower() == "q":
             done = True
             print("You have quit the best game ever!")
+
+        else:
+            print()
+            print("Try a different direction!")
 
 
 main()
