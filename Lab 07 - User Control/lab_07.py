@@ -5,7 +5,8 @@ import arcade
 # --- Constants ---
 SCREEN_WIDTH = 600
 SCREEN_HEIGHT = 600
-MOVEMENT_SPEED = 3
+MOVEMENT_SPEED = 5
+
 
 class Moon:
     def __init__(self, position_x, position_y, change_x, change_y):
@@ -15,6 +16,7 @@ class Moon:
         self.change_y = change_y
 
     def draw(self):
+        # Draw the moon
         arcade.draw_circle_filled(self.position_x,
                                   self.position_y, 30,
                                   arcade.color.DARK_GRAY)
@@ -50,8 +52,6 @@ class Moon:
         self.position_y += self.change_y
         self.position_x += self.change_x
 
-        if self.position_x < 0:
-            self.position_x = 30
 
 class House:
     def __init__(self, position_x, position_y, change_x, change_y):
@@ -112,6 +112,7 @@ class House:
                              222 + y - 222,
                              arcade.color.RED, 1)
 
+        # Call the window and house function
         draw_house(self.position_x, self.position_y)
         draw_window(self.position_x + 20, self.position_y - 10)
         draw_window(self.position_x - 20, self.position_y - 10)
@@ -121,18 +122,26 @@ class House:
         self.position_y += self.change_y
         self.position_x += self.change_x
 
-    # See if the ball hit the edge of the screen. If so, change direction
+        # Check if house hits edge of screen, play sound if does
         if self.position_x > SCREEN_WIDTH - 60:
             self.position_x = SCREEN_WIDTH - 60
+            error_sound = arcade.load_sound(":resources:sounds/error1.wav")
+            arcade.play_sound(error_sound)
 
         if self.position_x < 60:
             self.position_x = 60
+            error_sound = arcade.load_sound(":resources:sounds/error1.wav")
+            arcade.play_sound(error_sound)
 
         if self.position_y > SCREEN_HEIGHT - 93:
             self.position_y = SCREEN_HEIGHT - 93
+            error_sound = arcade.load_sound(":resources:sounds/error1.wav")
+            arcade.play_sound(error_sound)
 
         if self.position_y < 88:
             self.position_y = 88
+            error_sound = arcade.load_sound(":resources:sounds/error1.wav")
+            arcade.play_sound(error_sound)
 
 
 def draw_star(x, y):
@@ -185,9 +194,11 @@ class MyGame(arcade.Window):
 
         self.set_mouse_visible(False)
 
-        # Create our house
+        # Create the house
         self.house = House(100, 100, 0, 0)
-        self.moon = Moon(0, 0, 0, 0)
+
+        # Create the moon
+        self.moon = Moon(50, 50, 0, 0)
 
     def on_draw(self):
         arcade.start_render()
@@ -198,6 +209,7 @@ class MyGame(arcade.Window):
         # Draw the ground
         arcade.draw_lrtb_rectangle_filled(0, 600, 200, 0, arcade.color.ENGLISH_GREEN)
 
+        # Calling the functions to draw the background
         draw_star(500, 400)
         draw_star(300, 450)
         draw_star(330, 500)
@@ -219,21 +231,20 @@ class MyGame(arcade.Window):
         draw_pine_tree(500, 230)
         draw_pine_tree(550, 150)
 
+        # Drawing the moving objects
         self.house.draw()
-
         self.moon.draw()
 
-    def on_mouse_motion(self, x, y, dx, dy):
-        """ Called to update our objects.
-        Happens approximately 60 times per second."""
+    # Moving the moon with the mouse
+    def on_mouse_motion(self, x, y, change_x, change_y):
         self.moon.position_x = x
         self.moon.position_y = y
 
     def update(self, delta_time):
         self.house.update()
 
+    # Moving the house with the arrow keys
     def on_key_press(self, key, modifiers):
-        """ Called whenever the user presses a key. """
         if key == arcade.key.LEFT:
             self.house.change_x = -MOVEMENT_SPEED
         elif key == arcade.key.RIGHT:
@@ -243,12 +254,18 @@ class MyGame(arcade.Window):
         elif key == arcade.key.DOWN:
             self.house.change_y = -MOVEMENT_SPEED
 
+    # When the key is released, stop moving
     def on_key_release(self, key, modifiers):
-        """ Called whenever a user releases a key. """
         if key == arcade.key.LEFT or key == arcade.key.RIGHT:
             self.house.change_x = 0
         elif key == arcade.key.UP or key == arcade.key.DOWN:
             self.house.change_y = 0
+
+    # If left mouse button is clicked, play this sound
+    def on_mouse_press(self, x, y, button, modifiers):
+        if button == arcade.MOUSE_BUTTON_LEFT:
+            hurt_sound = arcade.load_sound(":resources:sounds/hurt5.wav")
+            arcade.play_sound(hurt_sound)
 
 
 def main():
