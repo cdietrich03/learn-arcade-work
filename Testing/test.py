@@ -21,6 +21,7 @@
 # Running total
 # Boolean variables are true and false
 
+# lists use brackets, functions use parenthesis
 
 # Write your function below:
 def zap_list(list):
@@ -30,7 +31,19 @@ def zap_list(list):
 
 # This is some code you can use to test:
 
+<<<<<<< HEAD
+# my_list = [4, 2, 56, 2, 0]
+# positive_outlook_list = []
+# for item in my_list:
+#     if item > 0:
+#         positive_outlook_list.append(item)
+
+
+# print(positive_outlook_list)
+
+=======
 # Example 1, should print [0, 0, 0, 0]
 my_list = [6, 1, -1, 10]
 zap_list(my_list)
 print("Example 1:", my_list)
+>>>>>>> b9d1d823b4f4638933acf614507307d86c53cbd7
