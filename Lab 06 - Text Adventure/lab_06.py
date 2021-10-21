@@ -78,7 +78,6 @@ def main():
 
     current_room = 0
 
-
     done = False
     while not done:
         print()
@@ -87,17 +86,10 @@ def main():
 
         if user_choice.upper() == "north" or user_choice.upper() == "n":
             next_room = room_list[current_room].north
-            if next_room == None:
+            if next_room is None:
                 print("You can't go that way!")
             else:
                 current_room = next_room
-
-
-
-
-
-
-
 
 
 
