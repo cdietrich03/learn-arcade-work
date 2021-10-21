@@ -24,14 +24,11 @@
 # lists use brackets, functions use parenthesis
 
 # Write your function below:
-def zap_list(list):
-    for index in range(len(my_list)):
-        my_list[index] = 0
 
 
 # This is some code you can use to test:
 
-<<<<<<< HEAD
+
 # my_list = [4, 2, 56, 2, 0]
 # positive_outlook_list = []
 # for item in my_list:
@@ -41,9 +38,38 @@ def zap_list(list):
 
 # print(positive_outlook_list)
 
-=======
-# Example 1, should print [0, 0, 0, 0]
-my_list = [6, 1, -1, 10]
-zap_list(my_list)
-print("Example 1:", my_list)
->>>>>>> b9d1d823b4f4638933acf614507307d86c53cbd7
+
+""" Sprite Sample Program """
+
+import random
+import arcade
+
+# --- Constants ---
+SPRITE_SCALING_PLAYER = 0.5
+SPRITE_SCALING_COIN = 0.2
+COIN_COUNT = 50
+
+SCREEN_WIDTH = 800
+SCREEN_HEIGHT = 600
+
+
+class MyGame(arcade.Window):
+    """ Our custom Window Class"""
+
+    def __init__(self):
+        """ Initializer """
+        # Call the parent class initializer
+        super().__init__(SCREEN_WIDTH, SCREEN_HEIGHT, "Sprite Example")
+
+    def on_draw(self):
+        arcade.start_render()
+
+
+def main():
+    """ Main method """
+    window = MyGame()
+    arcade.run()
+
+
+if __name__ == "__main__":
+    main()
