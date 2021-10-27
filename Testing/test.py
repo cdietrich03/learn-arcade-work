@@ -29,6 +29,8 @@ def zap_list(list):
         my_list[index] = 0
 
 
+
+
 # This is some code you can use to test:
 
 <<<<<<< HEAD
