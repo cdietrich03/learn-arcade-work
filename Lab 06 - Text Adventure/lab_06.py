@@ -147,8 +147,6 @@ def main():
                 13, 5, 20, 11)
     room_list.append(room)
 
-<<<<<<< HEAD
-=======
     # Hall 3
     room = Room("You have now entered the third hall!\n"
                 "There are rooms to the north and south and a passage to the west.",
@@ -163,8 +161,6 @@ def main():
     room_list.append(room)
 
     current_room = 0
-
->>>>>>> b4d1abc40a07394f1d8fed6fcd6bb18a0bfdf6af
     done = False
     while not done:
         print()
@@ -175,10 +171,7 @@ def main():
         if user_choice.lower() == "north" or user_choice.lower() == "n":
             next_room = room_list[current_room].north
             if next_room is None:
-<<<<<<< HEAD
-=======
                 print()
->>>>>>> b4d1abc40a07394f1d8fed6fcd6bb18a0bfdf6af
                 print("You can't go that way!")
             else:
                 current_room = next_room
@@ -201,8 +194,6 @@ def main():
             else:
                 current_room = next_room
 
-<<<<<<< HEAD
-=======
         # Go west
         elif user_choice.lower() == "west" or user_choice.lower() == "w":
             next_room = room_list[current_room].west
@@ -222,6 +213,4 @@ def main():
             print()
             print("Try a different direction!")
 
-
->>>>>>> b4d1abc40a07394f1d8fed6fcd6bb18a0bfdf6af
 main()
