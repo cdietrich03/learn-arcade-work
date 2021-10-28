@@ -39,142 +39,141 @@
 # print(positive_outlook_list)
 
 
-import random
+"""
+Show how to have enemies shoot bullets aimed at the player.
+
+If Python and Arcade are installed, this example can be run from the command line with:
+python -m arcade.examples.sprite_bullets_enemy_aims
+"""
+
 import arcade
 import math
-
-SPRITE_SCALING = 0.5
+import os
 
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 600
-
-
-class Coin(arcade.Sprite):
-
-    def __init__(self, filename, sprite_scaling):
-        """ Constructor. """
-        # Call the parent class (Sprite) constructor
-        super().__init__(filename, sprite_scaling)
-
-        # Current angle in radians
-        self.circle_angle = 0
-
-        # How far away from the center to orbit, in pixels
-        self.circle_radius = 0
-
-        # How fast to orbit, in radians per frame
-        self.circle_speed = 0.008
-
-        # Set the center of the point we will orbit around
-        self.circle_center_x = 0
-        self.circle_center_y = 0
-
-    def update(self):
-
-        """ Update the ball's position. """
-        # Calculate a new x, y
-        self.center_x = self.circle_radius * math.sin(self.circle_angle) \
-            + self.circle_center_x
-        self.center_y = self.circle_radius * math.cos(self.circle_angle) \
-            + self.circle_center_y
-
-        # Increase the angle in prep for the next round.
-        self.circle_angle += self.circle_speed
+SCREEN_TITLE = "Sprites and Bullets Enemy Aims Example"
+BULLET_SPEED = 20
 
 
 class MyGame(arcade.Window):
-    """ Main application class. """
+    """ Main application class """
 
-    def __init__(self, width, height):
+    def __init__(self, width, height, title):
+        super().__init__(width, height, title)
 
-        super().__init__(width, height)
+        # Set the working directory (where we expect to find files) to the same
+        # directory this .py file is in. You can leave this out of your own
+        # code, but it is needed to easily run the examples using "python -m"
+        # as mentioned at the top of this program.
+        file_path = os.path.dirname(os.path.abspath(__file__))
+        os.chdir(file_path)
 
-        # Sprite lists
+        arcade.set_background_color(arcade.color.BLACK)
+
+        self.frame_count = 0
+
+        self.enemy_list = None
+        self.bullet_list = None
         self.player_list = None
-        self.coin_list = None
+        self.player = None
 
-        # Set up the player
-        self.score = 0
-        self.player_sprite = None
-
-    def start_new_game(self):
-        """ Set up the game and initialize the variables. """
-
-        # Sprite lists
+    def setup(self):
+        self.enemy_list = arcade.SpriteList()
+        self.bullet_list = arcade.SpriteList()
         self.player_list = arcade.SpriteList()
-        self.coin_list = arcade.SpriteList()
 
-        # Set up the player
-        self.score = 0
+        # Add player ship
+        self.player = arcade.Sprite(":resources:images/space_shooter/playerShip1_orange.png", 0.5)
+        self.player_list.append(self.player)
 
-        # Character image from kenney.nl
-        self.player_sprite = arcade.Sprite("character.png", SPRITE_SCALING)
-        self.player_sprite.center_x = 50
-        self.player_sprite.center_y = 70
-        self.player_list.append(self.player_sprite)
+        # Add top-left enemy ship
+        enemy = arcade.Sprite(":resources:images/space_shooter/playerShip1_green.png", 0.5)
+        enemy.center_x = 120
+        enemy.center_y = SCREEN_HEIGHT - enemy.height
+        enemy.angle = 180
+        self.enemy_list.append(enemy)
 
-        for i in range(50):
-
-            # Create the coin instance
-            # Coin image from kenney.nl
-            coin = Coin("coin_01.png", SPRITE_SCALING / 3)
-
-            # Position the center of the circle the coin will orbit
-            coin.circle_center_x = random.randrange(SCREEN_WIDTH)
-            coin.circle_center_y = random.randrange(SCREEN_HEIGHT)
-
-            # Random radius from 10 to 200
-            coin.circle_radius = random.randrange(10, 200)
-
-            # Random start angle from 0 to 2pi
-            coin.circle_angle = random.random() * 2 * math.pi
-
-            # Add the coin to the lists
-            self.coin_list.append(coin)
-
-        # Don't show the mouse cursor
-        self.set_mouse_visible(False)
-
-        # Set the background color
-        arcade.set_background_color(arcade.color.AMAZON)
+        # Add top-right enemy ship
+        enemy = arcade.Sprite(":resources:images/space_shooter/playerShip1_green.png", 0.5)
+        enemy.center_x = SCREEN_WIDTH - 120
+        enemy.center_y = SCREEN_HEIGHT - enemy.height
+        enemy.angle = 180
+        self.enemy_list.append(enemy)
 
     def on_draw(self):
+        """Render the screen. """
 
-        # This command has to happen before we start drawing
         arcade.start_render()
 
-        # Draw all the sprites.
-        self.coin_list.draw()
+        self.enemy_list.draw()
+        self.bullet_list.draw()
         self.player_list.draw()
 
-        # Put the text on the screen.
-        output = "Score: " + str(self.score)
-        arcade.draw_text(output, 10, 20, arcade.color.WHITE, 14)
+    def on_update(self, delta_time):
+        """All the logic to move, and the game logic goes here. """
 
-    def on_mouse_motion(self, x, y, dx, dy):
-        self.player_sprite.center_x = x
-        self.player_sprite.center_y = y
+        self.frame_count += 1
 
-    def update(self, delta_time):
-        """ Movement and game logic """
+        # Loop through each enemy that we have
+        for enemy in self.enemy_list:
 
-        # Call update on all sprites (The sprites don't do much in this
-        # example though.)
-        self.coin_list.update()
+            # First, calculate the angle to the player. We could do this
+            # only when the bullet fires, but in this case we will rotate
+            # the enemy to face the player each frame, so we'll do this
+            # each frame.
 
-        # Generate a list of all sprites that collided with the player.
-        hit_list = arcade.check_for_collision_with_list(self.player_sprite,
-                                                        self.coin_list)
+            # Position the start at the enemy's current location
+            start_x = enemy.center_x
+            start_y = enemy.center_y
 
-        # Loop through each colliding sprite, remove it, and add to the score.
-        for coin in hit_list:
-            self.score += 1
-            coin.remove_from_sprite_lists()
+            # Get the destination location for the bullet
+            dest_x = self.player.center_x
+            dest_y = self.player.center_y
+
+            # Do math to calculate how to get the bullet to the destination.
+            # Calculation the angle in radians between the start points
+            # and end points. This is the angle the bullet will travel.
+            x_diff = dest_x - start_x
+            y_diff = dest_y - start_y
+            angle = math.atan2(y_diff, x_diff)
+
+            # Set the enemy to face the player.
+            enemy.angle = math.degrees(angle)-90
+
+            # Shoot every 60 frames change of shooting each frame
+            if self.frame_count % 60 == 0:
+                bullet = arcade.Sprite(":resources:images/space_shooter/laserBlue01.png")
+                bullet.center_x = start_x
+                bullet.center_y = start_y
+
+                # Angle the bullet sprite
+                bullet.angle = math.degrees(angle)
+
+                # Taking into account the angle, calculate our change_x
+                # and change_y. Velocity is how fast the bullet travels.
+                bullet.change_x = math.cos(angle) * BULLET_SPEED
+                bullet.change_y = math.sin(angle) * BULLET_SPEED
+
+                self.bullet_list.append(bullet)
+
+        # Get rid of the bullet when it flies off-screen
+        for bullet in self.bullet_list:
+            if bullet.top < 0:
+                bullet.remove_from_sprite_lists()
+
+        self.bullet_list.update()
+
+    def on_mouse_motion(self, x, y, delta_x, delta_y):
+        """Called whenever the mouse moves. """
+        self.player.center_x = x
+        self.player.center_y = y
 
 
 def main():
-    window = MyGame(SCREEN_WIDTH, SCREEN_HEIGHT)
-    window.start_new_game()
+    """ Main function """
+    window = MyGame(SCREEN_WIDTH, SCREEN_HEIGHT, SCREEN_TITLE)
+    window.setup()
     arcade.run()
 
 
