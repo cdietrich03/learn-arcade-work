@@ -2,10 +2,10 @@ import random
 import arcade
 
 # Constants
-SPRITE_SCALING_ADVENTURER = 0.65
+SPRITE_SCALING_ADVENTURER = 0.5
 SPRITE_SCALING_KEY = 0.5
-SPRITE_SCALING_CACTUS = 0.5
-KEY_COUNT = 25
+SPRITE_SCALING_CACTUS = 0.35
+KEY_COUNT = 40
 CACTUS_COUNT = 25
 
 SCREEN_WIDTH = 600
@@ -13,30 +13,41 @@ SCREEN_HEIGHT = 600
 
 
 class Cactus(arcade.Sprite):
+    # Reset cacti to random position on side of screen
     def reset_pos(self):
-        self.center_x = random.randrange(SCREEN_WIDTH)
-        self.center_y = random.randrange(SCREEN_HEIGHT + 20, SCREEN_HEIGHT + 100)
+        self.center_x = random.randrange(SCREEN_WIDTH + 20, SCREEN_WIDTH + 75)
+        self.center_y = random.randrange(SCREEN_HEIGHT)
 
+    # Reset cacti to random position on bottom of screen
+    def reset(self):
+        self.center_x = random.randrange(SCREEN_WIDTH)
+        self.center_y = random.randrange(SCREEN_HEIGHT - 700, SCREEN_HEIGHT - 620)
+
+    # Move diagonally, up and left
     def update(self):
         self.center_x -= 1
         self.center_y += 1
 
-        if self.top < 0:
+        # If the bottom goes above the top or the right side goes past the screen, reset
+        if self.bottom > 600:
             self.reset_pos()
+        elif self.right < 0:
+            self.reset()
 
 
 class Key(arcade.Sprite):
-    def reset(self):
+    # Reset the key to a random position at the top of the screen
+    def reset_pos(self):
         self.center_x = random.randrange(SCREEN_WIDTH)
         self.center_y = random.randrange(SCREEN_HEIGHT + 20, SCREEN_HEIGHT + 100)
 
+    # Move the key downwards
     def update(self):
-        # Moving the key
-        self.center_y += 1
+        self.center_y -= 1
 
-        # See if we went off-screen
-        if self.top > 600:
-            self.reset()
+        # If key goes past the screen, reset position
+        if self.top < 0:
+            self.reset_pos()
 
 
 class MyGame(arcade.Window):
@@ -52,12 +63,15 @@ class MyGame(arcade.Window):
         self.adventurer_sprite = None
         self.score = 0
 
+        # Do not show cursor
         self.set_mouse_visible(False)
 
+        # Set the background color
         arcade.set_background_color(arcade.color.BABY_BLUE_EYES)
 
     def setup(self):
 
+        # Create the lists
         self.adventurer_list = arcade.SpriteList()
         self.key_list = arcade.SpriteList()
         self.cactus_list = arcade.SpriteList()
@@ -98,26 +112,43 @@ class MyGame(arcade.Window):
         self.adventurer_list.draw()
         self.cactus_list.draw()
 
+        # When all keys collected with no cacti, print you win
+        if self.score == 40:
+            arcade.draw_text(f"You Win!", 225, 300, arcade.color.BLACK, 30)
+
+        if len(self.key_list) == 0 and self.score != 40:
+            arcade.draw_text(f"Game Over!", 200, 300, arcade.color.BLACK, 30)
+            lose_sound = arcade.load_sound(":resources:sounds/gameover5.wav")
+            arcade.play_sound(lose_sound)
+
         # Put the score in the bottom left corner
         output = f"Score: {self.score}"
         arcade.draw_text(output, 10, 10, arcade.color.BLACK, 12)
 
     def on_mouse_motion(self, x: float, y: float, dx: float, dy: float):
-        self.adventurer_sprite.center_x = x
-        self.adventurer_sprite.center_y = y
+        if len(self.key_list) != 0:
+            self.adventurer_sprite.center_x = x
+            self.adventurer_sprite.center_y = y
 
     def update(self, delta_time):
-        self.key_list.update()
+        # If the key list is zero then stop moving keys
+        if len(self.key_list) != 0:
+            self.key_list.update()
 
         # Check if key collides with adventurer
         keys_hit_list = arcade.check_for_collision_with_list(self.adventurer_sprite, self.key_list)
 
-        # Remove key and add score if hit
+        # Remove key and add score if hit and play sound
         for key in keys_hit_list:
-            self.key.reset()
+            key.remove_from_sprite_lists()
             self.score += 1
+            key_sound = arcade.load_sound(":resources:sounds/coin2.wav")
+            arcade.play_sound(key_sound)
 
-        self.cactus_list.update()
+        # If the key list is zero then stop moving cacti
+        if len(self.key_list) != 0:
+            self.cactus_list.update()
+
         # Check if cactus collides with adventurer
         cactus_hit_list = arcade.check_for_collision_with_list(self.adventurer_sprite, self.cactus_list)
 
@@ -125,6 +156,8 @@ class MyGame(arcade.Window):
         for cactus in cactus_hit_list:
             cactus.remove_from_sprite_lists()
             self.score -= 1
+            cactus_sound = arcade.load_sound(":resources:sounds/hurt3.wav")
+            arcade.play_sound(cactus_sound)
 
 
 def main():
