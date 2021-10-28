@@ -12,19 +12,31 @@ SCREEN_WIDTH = 600
 SCREEN_HEIGHT = 600
 
 
-class Key(arcade.Sprite):
-    def __init__(self, filename, sprite_scaling):
-        super().__init__(filename, sprite_scaling)
+class Cactus(arcade.Sprite):
+    def reset_pos(self):
+        self.center_x = random.randrange(SCREEN_WIDTH)
+        self.center_y = random.randrange(SCREEN_HEIGHT + 20, SCREEN_HEIGHT + 100)
 
-        self.change_x = 0
-        self.change_y = 0
+    def update(self):
+        self.center_x -= 1
+        self.center_y += 1
+
+        if self.top < 0:
+            self.reset_pos()
+
+
+class Key(arcade.Sprite):
+    def reset(self):
+        self.center_x = random.randrange(SCREEN_WIDTH)
+        self.center_y = random.randrange(SCREEN_HEIGHT + 20, SCREEN_HEIGHT + 100)
 
     def update(self):
         # Moving the key
-        self.center_x += self.change_x
-        self.center_y += self.change_y
+        self.center_y += 1
 
-
+        # See if we went off-screen
+        if self.top > 600:
+            self.reset()
 
 
 class MyGame(arcade.Window):
@@ -44,7 +56,6 @@ class MyGame(arcade.Window):
 
         arcade.set_background_color(arcade.color.BABY_BLUE_EYES)
 
-
     def setup(self):
 
         self.adventurer_list = arcade.SpriteList()
@@ -61,7 +72,7 @@ class MyGame(arcade.Window):
 
         # Make the keys
         for i in range(KEY_COUNT):
-            key = arcade.Sprite("keyYellow.png", SPRITE_SCALING_KEY)
+            key = Key("keyYellow.png", SPRITE_SCALING_KEY)
 
             # Position the keys
             key.center_x = random.randrange(SCREEN_WIDTH)
@@ -71,7 +82,7 @@ class MyGame(arcade.Window):
             self.key_list.append(key)
 
         for i in range(CACTUS_COUNT):
-            cactus = arcade.Sprite("cactus.png", SPRITE_SCALING_CACTUS)
+            cactus = Cactus("cactus.png", SPRITE_SCALING_CACTUS)
 
             # Position the cacti
             cactus.center_x = random.randrange(SCREEN_WIDTH)
@@ -103,13 +114,12 @@ class MyGame(arcade.Window):
 
         # Remove key and add score if hit
         for key in keys_hit_list:
-            key.remove_from_sprite_lists()
+            self.key.reset()
             self.score += 1
 
         self.cactus_list.update()
         # Check if cactus collides with adventurer
         cactus_hit_list = arcade.check_for_collision_with_list(self.adventurer_sprite, self.cactus_list)
-
 
         # Remove cactus and subtract score if hit
         for cactus in cactus_hit_list:
