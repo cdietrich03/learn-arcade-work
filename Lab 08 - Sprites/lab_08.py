@@ -66,6 +66,8 @@ class MyGame(arcade.Window):
         # Do not show cursor
         self.set_mouse_visible(False)
 
+        self.lose_sound = None
+
         # Set the background color
         arcade.set_background_color(arcade.color.BABY_BLUE_EYES)
 
@@ -118,8 +120,10 @@ class MyGame(arcade.Window):
 
         if len(self.key_list) == 0 and self.score != 40:
             arcade.draw_text(f"Game Over!", 200, 300, arcade.color.BLACK, 30)
-            lose_sound = arcade.load_sound(":resources:sounds/gameover5.wav")
-            arcade.play_sound(lose_sound)
+
+            if not self.lose_sound:
+                self.lose_sound = arcade.load_sound(":resources:sounds/gameover5.wav")
+                arcade.play_sound(self.lose_sound)
 
         # Put the score in the bottom left corner
         output = f"Score: {self.score}"
