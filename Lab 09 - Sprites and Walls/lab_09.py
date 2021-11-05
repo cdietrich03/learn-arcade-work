@@ -137,6 +137,19 @@ class MyGame(arcade.Window):
             wall.center_x = i * 64 + 968
             wall.center_y = 606
             self.wall_list.append(wall)
+        for i in range(2):
+            wall = arcade.Sprite("platformPack_tile008.png", SPRITE_SCALING)
+            wall.center_x = i * 64 + 256
+            wall.center_y = 700
+            self.wall_list.append(wall)
+
+        # Vertical Wall
+        # Blocks of 2
+        for i in range(2):
+            wall = arcade.Sprite("platformPack_tile008.png", SPRITE_SCALING)
+            wall.center_x = 1032
+            wall.center_y = i * 64 + 734
+            self.wall_list.append(wall)
 
         # Blocks of 5
         for i in range(5):
