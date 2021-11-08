@@ -113,6 +113,11 @@ class MyGame(arcade.Window):
             wall.center_x = i * 64 + 712
             wall.center_y = 862
             self.wall_list.append(wall)
+        for i in range(7):
+            wall = arcade.Sprite("platformPack_tile008.png", SPRITE_SCALING)
+            wall.center_x = i * 64 + 264
+            wall.center_y = 990
+            self.wall_list.append(wall)
 
         # Blocks of 3
         for i in range(3):
@@ -130,6 +135,11 @@ class MyGame(arcade.Window):
             wall.center_x = i * 64 + 712
             wall.center_y = 862
             self.wall_list.append(wall)
+        for i in range(3):
+            wall = arcade.Sprite("platformPack_tile008.png", SPRITE_SCALING)
+            wall.center_x = i * 64 + 456
+            wall.center_y = 798
+            self.wall_list.append(wall)
 
         # Blocks of 2
         for i in range(2):
@@ -139,8 +149,25 @@ class MyGame(arcade.Window):
             self.wall_list.append(wall)
         for i in range(2):
             wall = arcade.Sprite("platformPack_tile008.png", SPRITE_SCALING)
-            wall.center_x = i * 64 + 256
-            wall.center_y = 700
+            wall.center_x = i * 64 + 264
+            wall.center_y = 734
+            self.wall_list.append(wall)
+        for i in range(2):
+            wall = arcade.Sprite("platformPack_tile008.png", SPRITE_SCALING)
+            wall.center_x = i * 64 + 840
+            wall.center_y = 1054
+            self.wall_list.append(wall)
+        for i in range(2):
+            wall = arcade.Sprite("platformPack_tile008.png", SPRITE_SCALING)
+            wall.center_x = i * 64 + 264
+            wall.center_y = 1118
+            self.wall_list.append(wall)
+
+        # Blocks of 5
+        for i in range(5):
+            wall = arcade.Sprite("platformPack_tile008.png", SPRITE_SCALING)
+            wall.center_x = i * 64 + 264
+            wall.center_y = 606
             self.wall_list.append(wall)
 
         # Vertical Wall
@@ -150,12 +177,29 @@ class MyGame(arcade.Window):
             wall.center_x = 1032
             wall.center_y = i * 64 + 734
             self.wall_list.append(wall)
-
-        # Blocks of 5
-        for i in range(5):
+        for i in range(2):
             wall = arcade.Sprite("platformPack_tile008.png", SPRITE_SCALING)
-            wall.center_x = i * 64 + 264
-            wall.center_y = 606
+            wall.center_x = 584
+            wall.center_y = i * 64 + 1054
+            self.wall_list.append(wall)
+        for i in range(2):
+            wall = arcade.Sprite("platformPack_tile008.png", SPRITE_SCALING)
+            wall.center_x = 712
+            wall.center_y = i * 64 + 1118
+            self.wall_list.append(wall)
+
+        # Blocks of 3
+        for i in range(3):
+            wall = arcade.Sprite("platformPack_tile008.png", SPRITE_SCALING)
+            wall.center_x = 392
+            wall.center_y = i * 64 + 734
+            self.wall_list.append(wall)
+
+        # Blocks of 4
+        for i in range(4):
+            wall = arcade.Sprite("platformPack_tile008.png", SPRITE_SCALING)
+            wall.center_x = 968
+            wall.center_y = i * 64 + 926
             self.wall_list.append(wall)
 
         for x in range(NUMBER_OF_GEMS):
@@ -190,12 +234,12 @@ class MyGame(arcade.Window):
             self.wall_list.append(wall)
 
             wall = arcade.Sprite("meteorGrey_med1.png", 1.3)
-            wall.center_x = 800
+            wall.center_x = 780
             wall.center_y = 925
             self.wall_list.append(wall)
 
             wall = arcade.Sprite("meteorGrey_med1.png", 1.3)
-            wall.center_x = 400
+            wall.center_x = 454
             wall.center_y = 1053
             self.wall_list.append(wall)
 
@@ -204,7 +248,10 @@ class MyGame(arcade.Window):
             wall.center_y = 605
             self.wall_list.append(wall)
 
-
+            wall = arcade.Sprite("meteorGrey_med1.png", 1.3)
+            wall.center_x = 776
+            wall.center_y = 734
+            self.wall_list.append(wall)
 
         self.physics_engine = arcade.PhysicsEngineSimple(self.player_sprite, self.wall_list)
 
@@ -237,7 +284,6 @@ class MyGame(arcade.Window):
         arcade.draw_text(output, 10, 10, arcade.color.BLACK, 12)
 
     def on_key_press(self, key, modifiers):
-        """Called whenever a key is pressed. """
 
         if key == arcade.key.UP:
             self.player_sprite.change_y = PLAYER_MOVEMENT_SPEED
