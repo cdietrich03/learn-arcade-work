@@ -91,17 +91,6 @@ class MyGame(arcade.Window):
             wall.center_y = y
             self.wall_list.append(wall)
 
-        # # Random maze of blocks
-        # for y in range(414, 800, 128):
-        #     for x in range(264, 1136, 64):
-        #         # Randomly skip a box so the player can find a way through
-        #         if random.randrange(3) > 0:
-        #             wall = arcade.Sprite("platformPack_tile008.png", SPRITE_SCALING)
-        #             wall.center_x = x
-        #             wall.center_y = y
-        #             self.wall_list.append(wall)
-
-        # Create the maze
         # Blocks of 7
         for i in range(7):
             wall = arcade.Sprite("platformPack_tile008.png", SPRITE_SCALING)
@@ -202,31 +191,6 @@ class MyGame(arcade.Window):
             wall.center_y = i * 64 + 926
             self.wall_list.append(wall)
 
-        for x in range(NUMBER_OF_GEMS):
-            gem = arcade.Sprite("platformPack_item004.png", 0.6)
-
-            # Boolean variable if we successfully placed the gem
-            gem_placed_well = False
-
-            # Keep trying until success
-            while not gem_placed_well:
-                # Position the gem
-                gem.center_x = random.randrange(200, 1200)
-                gem.center_y = random.randrange(414, 1150)
-
-                # See if the gem is hitting a wall
-                wall_hit_list = arcade.check_for_collision_with_list(gem, self.wall_list)
-
-                # See if the gem is hitting another gem
-                gem_hit_list = arcade.check_for_collision_with_list(gem, self.gem_list)
-
-                if len(wall_hit_list) == 0 and len(gem_hit_list) == 0:
-                    # It is!
-                    gem_placed_well = True
-
-            # Add the gem to the lists
-            self.gem_list.append(gem)
-
             # Place some rocks
             wall = arcade.Sprite("meteorGrey_med1.png", 1.3)
             wall.center_x = 500
@@ -252,6 +216,31 @@ class MyGame(arcade.Window):
             wall.center_x = 776
             wall.center_y = 734
             self.wall_list.append(wall)
+
+        for x in range(NUMBER_OF_GEMS):
+            gem = arcade.Sprite("platformPack_item004.png", 0.6)
+
+            # Boolean variable if we successfully placed the gem
+            gem_placed_well = False
+
+            # Keep trying until success
+            while not gem_placed_well:
+                # Position the gem
+                gem.center_x = random.randrange(200, 1200)
+                gem.center_y = random.randrange(414, 1150)
+
+                # See if the gem is hitting a wall
+                wall_hit_list = arcade.check_for_collision_with_list(gem, self.wall_list)
+
+                # See if the gem is hitting another gem
+                gem_hit_list = arcade.check_for_collision_with_list(gem, self.gem_list)
+
+                if len(wall_hit_list) == 0 and len(gem_hit_list) == 0:
+                    # It is!
+                    gem_placed_well = True
+
+            # Add the gem to the lists
+            self.gem_list.append(gem)
 
         self.physics_engine = arcade.PhysicsEngineSimple(self.player_sprite, self.wall_list)
 
