@@ -1,12 +1,3 @@
-"""
-Scroll around a large screen.
-
-Artwork from https://kenney.nl and arcade.academy
-
-If Python and Arcade are installed, this example can be run from the command line with:
-python -m arcade.examples.sprite_move_scrolling
-"""
-
 import random
 import arcade
 
@@ -30,12 +21,9 @@ NUMBER_OF_GEMS = 25
 
 
 class MyGame(arcade.Window):
-    """ Main application class. """
 
     def __init__(self, width, height, title):
-        """
-        Initializer
-        """
+
         super().__init__(width, height, title, resizable=True)
 
         # Sprite lists
@@ -57,6 +45,7 @@ class MyGame(arcade.Window):
 
     def setup(self):
         """ Set up the game and initialize the variables. """
+        # Sprites from kenney.nl and arcade library
 
         # Sprite lists
         self.player_list = arcade.SpriteList()
@@ -91,6 +80,8 @@ class MyGame(arcade.Window):
             wall.center_y = y
             self.wall_list.append(wall)
 
+        # All inner walls
+        # Horizontal walls
         # Blocks of 7
         for i in range(7):
             wall = arcade.Sprite("platformPack_tile008.png", SPRITE_SCALING)
@@ -159,7 +150,7 @@ class MyGame(arcade.Window):
             wall.center_y = 606
             self.wall_list.append(wall)
 
-        # Vertical Wall
+        # Vertical Walls
         # Blocks of 2
         for i in range(2):
             wall = arcade.Sprite("platformPack_tile008.png", SPRITE_SCALING)
@@ -191,32 +182,33 @@ class MyGame(arcade.Window):
             wall.center_y = i * 64 + 926
             self.wall_list.append(wall)
 
-            # Place some rocks
-            wall = arcade.Sprite("meteorGrey_med1.png", 1.3)
-            wall.center_x = 500
-            wall.center_y = 541
-            self.wall_list.append(wall)
+        # Place some rocks
+        wall = arcade.Sprite("meteorGrey_med1.png", 1.3)
+        wall.center_x = 500
+        wall.center_y = 541
+        self.wall_list.append(wall)
 
-            wall = arcade.Sprite("meteorGrey_med1.png", 1.3)
-            wall.center_x = 780
-            wall.center_y = 925
-            self.wall_list.append(wall)
+        wall = arcade.Sprite("meteorGrey_med1.png", 1.3)
+        wall.center_x = 780
+        wall.center_y = 925
+        self.wall_list.append(wall)
 
-            wall = arcade.Sprite("meteorGrey_med1.png", 1.3)
-            wall.center_x = 454
-            wall.center_y = 1053
-            self.wall_list.append(wall)
+        wall = arcade.Sprite("meteorGrey_med1.png", 1.3)
+        wall.center_x = 454
+        wall.center_y = 1053
+        self.wall_list.append(wall)
 
-            wall = arcade.Sprite("meteorGrey_med1.png", 1.3)
-            wall.center_x = 1096
-            wall.center_y = 605
-            self.wall_list.append(wall)
+        wall = arcade.Sprite("meteorGrey_med1.png", 1.3)
+        wall.center_x = 1096
+        wall.center_y = 605
+        self.wall_list.append(wall)
 
-            wall = arcade.Sprite("meteorGrey_med1.png", 1.3)
-            wall.center_x = 776
-            wall.center_y = 734
-            self.wall_list.append(wall)
+        wall = arcade.Sprite("meteorGrey_med1.png", 1.3)
+        wall.center_x = 776
+        wall.center_y = 734
+        self.wall_list.append(wall)
 
+        # Place the gems
         for x in range(NUMBER_OF_GEMS):
             gem = arcade.Sprite("platformPack_item004.png", 0.6)
 
@@ -229,14 +221,13 @@ class MyGame(arcade.Window):
                 gem.center_x = random.randrange(200, 1200)
                 gem.center_y = random.randrange(414, 1150)
 
-                # See if the gem is hitting a wall
+                # See if the gem is hitting a wall/rock
                 wall_hit_list = arcade.check_for_collision_with_list(gem, self.wall_list)
 
                 # See if the gem is hitting another gem
                 gem_hit_list = arcade.check_for_collision_with_list(gem, self.gem_list)
 
                 if len(wall_hit_list) == 0 and len(gem_hit_list) == 0:
-                    # It is!
                     gem_placed_well = True
 
             # Add the gem to the lists
@@ -248,11 +239,8 @@ class MyGame(arcade.Window):
         arcade.set_background_color(arcade.color.DARK_GRAY)
 
     def on_draw(self):
-        """
-        Render the screen.
-        """
 
-        # This command has to happen before we start drawing
+        # Begin
         arcade.start_render()
 
         # Select the camera we'll use to draw all our sprites
@@ -273,18 +261,18 @@ class MyGame(arcade.Window):
         arcade.draw_text(output, 10, 10, arcade.color.BLACK, 12)
 
     def on_key_press(self, key, modifiers):
-
+        # moving the player
         if key == arcade.key.UP:
             self.player_sprite.change_y = PLAYER_MOVEMENT_SPEED
         elif key == arcade.key.DOWN:
-            self.player_sprite.change_y = -PLAYER_MOVEMENT_SPEED
+            self.player_sprite.change_y = PLAYER_MOVEMENT_SPEED
         elif key == arcade.key.LEFT:
             self.player_sprite.change_x = -PLAYER_MOVEMENT_SPEED
         elif key == arcade.key.RIGHT:
             self.player_sprite.change_x = PLAYER_MOVEMENT_SPEED
 
     def on_key_release(self, key, modifiers):
-        """Called when the user releases a key. """
+        # Do not move if no key pressed
 
         if key == arcade.key.UP or key == arcade.key.DOWN:
             self.player_sprite.change_y = 0
@@ -292,31 +280,25 @@ class MyGame(arcade.Window):
             self.player_sprite.change_x = 0
 
     def on_update(self, delta_time):
-        """ Movement and game logic """
-
         self.gem_list.update()
 
+        # Checks for collisions between gem and player
         gem_hit_list = arcade.check_for_collision_with_list(self.player_sprite, self.gem_list)
 
+        # If a gem collides with player, remove gem
         for gem in gem_hit_list:
             gem.remove_from_sprite_lists()
             self.score += 1
-        # Call update on all sprites (The sprites don't do much in this
-        # example though.)
+            gem_sound = arcade.load_sound("coin2.wav")
+            arcade.play_sound(gem_sound)
+
+        # Call update on all sprites
         self.physics_engine.update()
 
         # Scroll the screen to the player
         self.scroll_to_player()
 
     def scroll_to_player(self):
-        """
-        Scroll the window to the player.
-
-        if CAMERA_SPEED is 1, the camera will immediately move to the desired position.
-        Anything between 0 and 1 will have the camera move to the location with a smoother
-        pan.
-        """
-
         position = self.player_sprite.center_x - self.width / 2, self.player_sprite.center_y - self.height / 2
         self.camera_sprites.move_to(position, CAMERA_SPEED)
 
@@ -330,7 +312,6 @@ class MyGame(arcade.Window):
 
 
 def main():
-    """ Main function """
     window = MyGame(DEFAULT_SCREEN_WIDTH, DEFAULT_SCREEN_HEIGHT, SCREEN_TITLE)
     window.setup()
     arcade.run()
