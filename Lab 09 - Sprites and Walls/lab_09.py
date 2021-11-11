@@ -265,7 +265,7 @@ class MyGame(arcade.Window):
         if key == arcade.key.UP:
             self.player_sprite.change_y = PLAYER_MOVEMENT_SPEED
         elif key == arcade.key.DOWN:
-            self.player_sprite.change_y = PLAYER_MOVEMENT_SPEED
+            self.player_sprite.change_y = -PLAYER_MOVEMENT_SPEED
         elif key == arcade.key.LEFT:
             self.player_sprite.change_x = -PLAYER_MOVEMENT_SPEED
         elif key == arcade.key.RIGHT:
@@ -289,7 +289,7 @@ class MyGame(arcade.Window):
         for gem in gem_hit_list:
             gem.remove_from_sprite_lists()
             self.score += 1
-            gem_sound = arcade.load_sound("coin2.wav")
+            gem_sound = arcade.load_sound(":resources:sounds/coin2.wav")
             arcade.play_sound(gem_sound)
 
         # Call update on all sprites
