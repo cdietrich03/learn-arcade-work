@@ -28,10 +28,6 @@ class MyGame(arcade.Window):
                 self.grid[row].append(0)
 
     def on_draw(self):
-        """
-        Render the screen.
-        """
-
         arcade.start_render()
         for row in range(ROW_COUNT):
             for column in range(COLUMN_COUNT):

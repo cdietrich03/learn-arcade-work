@@ -31,6 +31,8 @@ class MyGame(arcade.Window):
         self.grid[1][5] = 1
         print(self.grid)
 
+
+
     def on_draw(self):
         """
         Render the screen.
@@ -67,6 +69,7 @@ def main():
 
     window = MyGame(SCREEN_WIDTH, SCREEN_HEIGHT)
     arcade.run()
+
 
 
 if __name__ == "__main__":

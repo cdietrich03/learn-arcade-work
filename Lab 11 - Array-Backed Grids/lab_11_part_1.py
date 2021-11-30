@@ -29,9 +29,6 @@ class MyGame(arcade.Window):
         print(self.grid)
 
     def on_draw(self):
-        """
-        Render the screen.
-        """
 
         arcade.start_render()
         for row in range(ROW_COUNT):
