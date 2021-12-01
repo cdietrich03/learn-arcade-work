@@ -138,7 +138,7 @@ class MyGame(arcade.Window):
             self.bee_list.append(bee)
 
 
-        for i in range(GEM_COUNT):
+        # for i in range(GEM_COUNT):
 
 
         if self.tile_map.background_color:

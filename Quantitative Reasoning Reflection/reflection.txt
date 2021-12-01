@@ -1,0 +1,66 @@
+
+Quantitative Reasoning Assignment
+
+Christina Dietrich
+1 December 2021
+
+
+    Upon deciding whether to use an "if" statement, I determine if there are
+multiple options I want as a result. For example, when I wanted my camel
+game to do specific things based on the user's choice, I used "if" statements
+so that each option (a, b, c, d, e) produces a different result. Deciding whether
+or to use a loop, I have to determine which kind of loop I want. When I know the
+number of times I want to loop, I use a "for" loop. When I want the loop to go
+until something else happens, I use a "while" loop. An example of a "for" loop
+would be in the loopy lab when I wanted the rectangles to be drawn a certain
+amount of times. I used the "for" loop for it nto draw 30 rectangles in a row and
+30 rectangles in a column. In the camel lab, I used a "while" loop to run my
+program until the player won or lost. The text questions cycled until the player
+either won or lose the program.
+    Using a list can come in handy when I wanted to place every element into a
+specific place or change words to have numerical values. An example of using a
+list would be in the spell check lab when I wanted each word in the dictionary
+to be assigned to a value in the list. This made it easy to compare the words in
+the dictionary to the words in the book by running through each position in the
+list. Using a function is easy especially when drawing a scene and simplifying
+code. In lab three, I used the idea of functions
+to draw multiple of the same items while only typing the x and y variables.
+The idea of classes can aid in the creation of separate items under the same
+type of functioning. For example, in lab 8, I used the idea of classes to create
+separate code for keys, cacti, and the player. They were all able to be
+referenced later in the code by utilizing the class name.
+    In order to communicate a solution to a certain problem, it is important to
+be descriptive in the solution. In coding, this is especially important
+throughout many aspects of a program. One way to be descriptive is through
+commenting. Commenting in a code can elaborate on what a certain line of code
+is, especially if it may be unclear to the reader of the code. Another way to
+be descriptive in coding is to have descriptive names of functions. For example,
+defining a function as "h" instead of "draw_house" would be confusing to a
+person trying to interpret or change the code. One other way to be descriptive
+inside of code is naming variables specifically. This goes along with naming
+function, but may be easier to label in a non-specific way. Instead of calling
+a variable just x or y, it is better to name a variable with something like row
+or column in order for an easier interpretation of the code.
+    In the same way that description is important, the structure of the code is
+also important. It is easy to get carried away and have one code chunk fo the
+entirety of the code, but this is hard to understand. In order to make code
+easier to interpret, it is important to chunk specific pieces of code by
+separating it with blank lines above and below it. This is easiest to do based
+on separate topics within the code.
+    It is also important to keep track of changes within code. When trying to
+communicate code with someone else or having multiple editors of on piece of code,
+it is important to save keep track of what has been changed. For example, if
+something in the code crashes that was previously running, if you still have the
+version of the code that was previously running, it would be easy to compare
+the new code with the old code in order to determine the error.
+    While testing the accuracy of code, it is most important to run the program.
+If the program crashes, the easiest way to debug it is to look at the error it
+outputs and determine what this means. If the error line is hard to interpret or
+if I do not know what it means, I check the errors that I or others normally make
+within code. For example, in a function, it is easy to forget the colon after
+the creation of it. The error output from this is not very good, so it is
+important to check general errors that many make just in case I made those same
+mistakes.
+
+3. -try running the code, if error locate line, in functions make sure there are colons(check normal errors)
+4. -original ideas, algorithms can crash
