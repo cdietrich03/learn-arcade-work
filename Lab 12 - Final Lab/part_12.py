@@ -18,6 +18,47 @@ CAMERA_SPEED = 0.1
 # How fast the character moves
 PLAYER_MOVEMENT_SPEED = 7
 
+TEXTURE_LEFT = 0
+TEXTURE_RIGHT = 1
+TEXTURE_STRAIGHT = 2
+BEE_COUNT = 30
+GEM_COUNT = 30
+
+
+class Bee(arcade.Sprite):
+    def __init__(self, filename, sprite_scaling):
+
+        super().__init__(filename, sprite_scaling)
+        # self.scale = 0.2
+        # self.textures = []
+        #
+        # texture = arcade.load_texture("bee.png", 0.2)
+        # self.textures.append(texture)
+        #
+        # texture = arcade.load_texture("bee.png", 0.2, flipped_horizontally=True)
+        # self.textures.append(texture)
+        #
+        # self.texture = texture
+
+        self.change_x = 0
+        self.change_y = 0
+
+    def update(self):
+        self.center_x += self.change_x
+        self.center_y += self.change_y
+
+        # if self.change_x < 0:
+        #     self.texture = self.textures[TEXTURE_LEFT]
+        # elif self.change_x > 0:
+        #     self.texture = self.textures[TEXTURE_RIGHT]
+
+        # If we are out-of-bounds, then 'bounce'
+        # if self.left < 0:
+        #     self.change_x *= -1
+        #
+        # if self.right > 1856:
+        #     self.change_x *= -1
+
 
 class MyGame(arcade.Window):
     """ Main application class. """
@@ -31,9 +72,14 @@ class MyGame(arcade.Window):
         # Sprite lists
         self.player_list = None
         self.wall_list = None
+        self.gem_list = None
+        self.bee_list = None
+        self.score = 0
+        self.game_over = False
 
         # Set up the player
         self.player_sprite = None
+        self.bee_sprite = None
 
         # Physics engine so we don't run into walls.
         self.physics_engine = None
@@ -50,24 +96,58 @@ class MyGame(arcade.Window):
         # Sprite lists
         self.player_list = arcade.SpriteList()
         self.wall_list = arcade.SpriteList()
+        self.gem_list = arcade.SpriteList()
+        self.bee_list = arcade.SpriteList()
 
         # Set up the player
-        self.player_sprite = arcade.Sprite("alienPink_front.png",
-                                           scale=0.3)
-        self.player_sprite.center_x = 256
-        self.player_sprite.center_y = 512
+        self.player_sprite = arcade.Sprite("alienPink_front.png", scale=0.3)
+        self.player_sprite.center_x = 100
+        self.player_sprite.center_y = 100
         self.player_list.append(self.player_sprite)
 
-
-        self.tile_map = arcade.load_tilemap("Final.json", scaling=SPRITE_SCALING)
+        map_name = "Final.json"
+        self.tile_map = arcade.load_tilemap(map_name, scaling=SPRITE_SCALING)
 
         self.wall_list = self.tile_map.sprite_lists["walls"]
+
+        for i in range(BEE_COUNT):
+            bee = Bee("bee.png", sprite_scaling=0.2)
+            bee_placed_successfully = False
+
+            # Keep trying until success
+            while not bee_placed_successfully:
+
+                bee.center_x = random.randrange(64, 1856)
+                bee.center_y = random.randrange(64, 1856)
+                bee.change_x = 5
+                bee.change_y = 0
+
+                wall_hit_list = arcade.check_for_collision_with_list(bee, self.wall_list)
+
+                # See if the coin is hitting another coin
+                bee_hit_list = arcade.check_for_collision_with_list(bee, self.bee_list)
+
+                if len(wall_hit_list) == 0 and len(bee_hit_list) == 0:
+                    # It is!
+                    bee_placed_successfully = True
+
+        # if bee.right > 1152:
+        #     bee.change_x *= -1
+        # if bee.left < 832:
+        #     bee.change_x *= -1
+            self.bee_list.append(bee)
+
+
+        for i in range(GEM_COUNT):
+
 
         if self.tile_map.background_color:
             arcade.set_background_color(self.tile_map.background_color)
 
 
-        self.physics_engine = arcade.PhysicsEnginePlatformer(self.player_sprite, self.wall_list, gravity_constant=0.5)
+        self.physics_engine = arcade.PhysicsEnginePlatformer(self.player_sprite,
+                                                             self.wall_list,
+                                                             gravity_constant=0.5)
 
         # Set the background color
 
@@ -85,26 +165,18 @@ class MyGame(arcade.Window):
         # Draw all the sprites.
         self.wall_list.draw()
         self.player_list.draw()
+        self.gem_list.draw()
+        self.bee_list.draw()
 
         # Select the (unscrolled) camera for our GUI
         self.camera_gui.use()
-
-        # Draw the GUI
-        arcade.draw_rectangle_filled(self.width // 2,
-                                     20,
-                                     self.width,
-                                     40,
-                                     arcade.color.ALMOND)
-        text = f"Scroll value: ({self.camera_sprites.position[0]:5.1f}, " \
-               f"{self.camera_sprites.position[1]:5.1f})"
-        arcade.draw_text(text, 10, 10, arcade.color.BLACK_BEAN, 20)
 
     def on_key_press(self, key, modifiers):
         """Called whenever a key is pressed. """
 
         if key == arcade.key.UP:
             if self.physics_engine.can_jump():
-                self.player_sprite.change_y = 15
+                self.player_sprite.change_y = 12
 
         elif key == arcade.key.LEFT:
             self.player_sprite.change_x = -PLAYER_MOVEMENT_SPEED
@@ -124,15 +196,33 @@ class MyGame(arcade.Window):
 
         # Call update on all sprites (The sprites don't do much in this
         # example though.)
-        self.physics_engine.update()
 
-        # Scroll the screen to the player
-        self.scroll_to_player()
+        if not self.game_over:
+            self.physics_engine.update()
+
+            if len(arcade.check_for_collision_with_list(self.player_sprite, self.bee_list)) > 0:
+                self.game_over = True
+
+            self.bee_list.update()
+
+            for bee in self.bee_list:
+                # If the enemy hit a wall, reverse
+                if len(arcade.check_for_collision_with_list(bee, self.wall_list)) > 0:
+                    bee.change_x *= -1
+                # If the enemy hit the left boundary, reverse
+                elif bee.boundary_left is not None and bee.left < bee.boundary_left:
+                    bee.change_x *= -1
+                # If the enemy hit the right boundary, reverse
+                elif bee.boundary_right is not None and bee.right > bee.boundary_right:
+                    bee.change_x *= -1
+
+            # Scroll the screen to the player
+            self.scroll_to_player()
+
 
     def scroll_to_player(self):
         """
         Scroll the window to the player.
-
         if CAMERA_SPEED is 1, the camera will immediately move to the desired position.
         Anything between 0 and 1 will have the camera move to the location with a smoother
         pan.
