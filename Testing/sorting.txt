@@ -8,7 +8,7 @@ my_list[7] = temp
 
 2. Write code to swap the values 2 and 27.
 
-my_list = [27, 32, 18,  2, 11, 57, 14, 38, 19, 91]
+my_list = [27, 32, 18, 2, 11, 57, 14, 38, 19, 91]
 
 temp = my_list[0]
 my_list[0] = my_list[3]
@@ -37,6 +37,7 @@ meaning that this code just sets position one (0) and two (1) to 70
 7. 0 8 11 12 47 60 62 74 97 98
 8. 0 8 11 12 47 60 62 74 97 98
 9. 0 8 11 12 47 60 62 74 97 98
+10. 0 8 11 12 47 60 62 74 97 98
 
 
 5. Show how the following numbers can be sorted using the selection sort:
@@ -51,6 +52,7 @@ meaning that this code just sets position one (0) and two (1) to 70
 7. 0 18 25 29 36 40 47 58 74 92
 8. 0 18 25 29 36 40 47 58 74 92
 9. 0 18 25 29 36 40 47 58 74 92
+10. 0 18 25 29 36 40 47 58 74 92
 
 
 6. Show how the following numbers can be sorted using the INSERTION sort. (Note: If you think the 0 gets immediately sorted into position, you are doing it wrong. Go back and re-read how this sort works.)
@@ -65,42 +67,161 @@ meaning that this code just sets position one (0) and two (1) to 70
 7. 0 18 36 40 47 58 74 92 29 25
 8. 0 18 29 36 40 47 58 74 92 25
 9. 0 18 25 29 36 40 47 58 74 92
+10. 0 18 25 29 36 40 47 58 74 92
 
 
 7. Show how the following numbers can be sorted using the insertion sort:
 
     37   11   14   50   24    7   17   88   99    9
-    1. 37 11 14 50 24 7 17 88 99 9
-    2. 11 37 14 50 24 7 17 88 99 9
-    3. 11 14 37 50 24 7 17 88 99 9
-    4. 11 14 24 37 50 7 17 88 99 9
-    5. 7 11 14 24 37 50 17 88 99 9
+    1. 11 37 14 50 24 7 17 88 99 9
+    2. 11 14 37 50 24 7 17 88 99 9
+    3. 11 14 24 37 50 7 17 88 99 9
+    4. 7 11 14 24 37 50 17 88 99 9
+    5. 7 11 14 17 24 37 50 88 99 9
     6. 7 11 14 17 24 37 50 88 99 9
     7. 7 11 14 17 24 37 50 88 99 9
-    8. 7 11 14 17 24 37 50 88 99 9
+    8. 7 9 11 14 17 24 37 50 88 99
     9. 7 9 11 14 17 24 37 50 88 99
+    10. 7 9 11 14 17 24 37 50 88 99
 
 8. Explain what `min_pos` does in the selection sort.
-Min_pos finds the smallest value in the list and in the code we set the value equal to the current position in order to "swap" values.
+"min_pos" finds the smallest value in the list and then, in the code, we set the value equal to the current position in
+order to "swap" values.
 
 9. Explain what `cur_pos` does in the selection sort.
-The current position depicts which position we are at in comparison to what has already been sorted.
+The "cur_pos" depicts which position we are at in comparison to what has already been sorted.
 
 10. Explain what `scan_pos` does in the selection sort.
-The scan_pos goes through each position in the list in relation to the current position and checks to see if that value is less than the smallest position. If the scan_pos is smaller, it sets the min_pos to this value.
+The "scan_pos" goes through each position in the list in relation to the current position and checks to see if that
+value is less than the smallest position. If the scan_pos is smaller, it sets the min_pos to this value.
 
 11. Explain what `key_pos` and `key_value` are in the insertion sort.
-key_pos is the divider in the list between the sorted and the not sorted values. key_value is the value that is currently being looked at for values greater than itself before being placed in its new position
+"key_pos" is the divider in the list between the sorted and the not sorted values. "key_value" is the value that is
+currently being looked at for values greater than itself before being placed in its new position.
+Once "key_value" finds a value smaller than itself, it stops and puts "key_value" to the left of it.
 
 12. Explain `scan_pos` in the insertion sort.
-scan_pos in insertion sort looks at the values to the left of the key_value and checks to see which of those values are greater than key_value.
+"scan_pos" in insertion sort looks at the values to the left of the key_value and checks to see which of those values
+are greater than key_value.
 
 13. Look at the example sort program at the very end of this chapter:
 
 https://learn.arcade.academy/en/latest/chapters/30_sorting/sorting.html
 
 
-Modify the sorts to print the number of times the inside loop is run, and the number of times the outside loop is run. Modify the program to work with a list of 100. Paste the code you used here. Run the program and list the numbers you got here. (DON'T FORGET TO INCLUDE THE RESULTS!) Inside loop for selection sort should be about 5,000, and insertion sort 2,500. Double-check if you don't get numbers close to these.
+Modify the sorts to print the number of times the inside loop is run, and the number of times the outside loop is run.
+Modify the program to work with a list of 100. Paste the code you used here. Run the program and list the numbers you
+got here. (DON'T FORGET TO INCLUDE THE RESULTS!) Inside loop for selection sort should be about 5,000, and insertion
+sort 2,500. Double-check if you don't get numbers close to these.
+
+import random
+
+
+def selection_sort(my_list):
+    """ Sort a list using the selection sort """
+    outer_select_loop_run = 0
+    inner_select_loop_run = 0
+    # Loop through the entire array
+    for cur_pos in range(len(my_list)):
+        # Find the position that has the smallest number
+        # Start with the current position
+        min_pos = cur_pos
+        outer_select_loop_run += 1
+
+        # Scan left to right (end of the list)
+        for scan_pos in range(cur_pos + 1, len(my_list)):
+            inner_select_loop_run += 1
+            # Is this position smallest?
+            if my_list[scan_pos] < my_list[min_pos]:
+                # It is, mark this position as the smallest
+                min_pos = scan_pos
+
+        # Swap the two values
+        temp = my_list[min_pos]
+        my_list[min_pos] = my_list[cur_pos]
+        my_list[cur_pos] = temp
+    print(outer_select_loop_run)
+    print(inner_select_loop_run)
+
+
+def insertion_sort(my_list):
+    """ Sort a list using the insertion sort """
+
+    # Start at the second element (pos 1).
+    # Use this element to insert into the
+    # list.
+    outer_insert_loop_run = 0
+    inner_insert_loop_run = 0
+    for key_pos in range(1, len(my_list)):
+        outer_insert_loop_run += 1
+        # Get the value of the element to insert
+        key_value = my_list[key_pos]
+
+        # Scan from right to the left (start of list)
+        scan_pos = key_pos - 1
+
+        # Loop each element, moving them up until
+        # we reach the position the
+        while (scan_pos >= 0) and (my_list[scan_pos] > key_value):
+            my_list[scan_pos + 1] = my_list[scan_pos]
+            scan_pos = scan_pos - 1
+            inner_insert_loop_run += 1
+
+        # Everything's been moved out of the way, insert
+        # the key into the correct location
+        my_list[scan_pos + 1] = key_value
+    print(outer_insert_loop_run)
+    print(inner_insert_loop_run)
+
+
+# This will point out a list
+# For more information on the print formatting {:3}
+# see the chapter on print formatting.
+def print_list(my_list):
+    for item in my_list:
+        print(f"{item:3}", end="")
+    print()
+
+
+def main():
+    # Create two lists of the same random numbers
+    list_for_selection_sort = []
+    list_for_insertion_sort = []
+    list_size = 100
+    for i in range(list_size):
+        new_number = random.randrange(100)
+        list_for_selection_sort.append(new_number)
+        list_for_insertion_sort.append(new_number)
+
+    # Print the original list
+    print("Original List")
+    print_list(list_for_selection_sort)
+
+    # Use the selection sort and print the result
+    print("Selection Sort")
+    selection_sort(list_for_selection_sort)
+    print_list(list_for_selection_sort)
+
+    # Use the insertion sort and print the result
+    print("Insertion Sort")
+    insertion_sort(list_for_insertion_sort)
+    print_list(list_for_insertion_sort)
+
+
+main()
+
+Results:
+Original List
+ 44 50 56 17 58 18 39 20  3 40 85 65 68 93 84 29 76 91 35 50 28 76 37 44 67 78 74 34 57 70  3 71 42 34 16 41  1 29  3 72 69 44 78 39 78 40  7 19 55 58 47 76 25 67 38 28 35 53 47 71 86 22 34 49  0 67 14  0 17 10 39 24 29 90 89 69 41 65 48  7 34  6 25  0 96 86 29 19 68 45 70 80 64 95  0 48 58 40 90 77
+Selection Sort
+100
+4950
+  0  0  0  0  1  3  3  3  6  7  7 10 14 16 17 17 18 19 19 20 22 24 25 25 28 28 29 29 29 29 34 34 34 34 35 35 37 38 39 39 39 40 40 40 41 41 42 44 44 44 45 47 47 48 48 49 50 50 53 55 56 57 58 58 58 64 65 65 67 67 67 68 68 69 69 70 70 71 71 72 74 76 76 76 77 78 78 78 80 84 85 86 86 89 90 90 91 93 95 96
+Insertion Sort
+99
+2457
+  0  0  0  0  1  3  3  3  6  7  7 10 14 16 17 17 18 19 19 20 22 24 25 25 28 28 29 29 29 29 34 34 34 34 35 35 37 38 39 39 39 40 40 40 41 41 42 44 44 44 45 47 47 48 48 49 50 50 53 55 56 57 58 58 58 64 65 65 67 67 67 68 68 69 69 70 70 71 71 72 74 76 76 76 77 78 78 78 80 84 85 86 86 89 90 90 91 93 95 96
+
 
 To turn in: Upload your .txt file. Just drag it from PyCharm to the upload for the assignment. (BUT WAIT! Make sure you include the results from #13, and not just the program.)
 

@@ -92,22 +92,20 @@
 import random
 
 
-
-
 def selection_sort(my_list):
     """ Sort a list using the selection sort """
-    oloop_run = 0
-    iloop_run = 0
+    outer_select_loop_run = 0
+    inner_select_loop_run = 0
     # Loop through the entire array
     for cur_pos in range(len(my_list)):
         # Find the position that has the smallest number
         # Start with the current position
         min_pos = cur_pos
-        oloop_run += 1
+        outer_select_loop_run += 1
 
         # Scan left to right (end of the list)
         for scan_pos in range(cur_pos + 1, len(my_list)):
-            iloop_run += 1
+            inner_select_loop_run += 1
             # Is this position smallest?
             if my_list[scan_pos] < my_list[min_pos]:
                 # It is, mark this position as the smallest
@@ -117,8 +115,8 @@ def selection_sort(my_list):
         temp = my_list[min_pos]
         my_list[min_pos] = my_list[cur_pos]
         my_list[cur_pos] = temp
-    print(oloop_run)
-    print(iloop_run)
+    print(outer_select_loop_run)
+    print(inner_select_loop_run)
 
 
 def insertion_sort(my_list):
@@ -127,10 +125,10 @@ def insertion_sort(my_list):
     # Start at the second element (pos 1).
     # Use this element to insert into the
     # list.
-    oloop_run = 0
-    iloop_run = 0
+    outer_insert_loop_run = 0
+    inner_insert_loop_run = 0
     for key_pos in range(1, len(my_list)):
-        oloop_run += 1
+        outer_insert_loop_run += 1
         # Get the value of the element to insert
         key_value = my_list[key_pos]
 
@@ -142,13 +140,13 @@ def insertion_sort(my_list):
         while (scan_pos >= 0) and (my_list[scan_pos] > key_value):
             my_list[scan_pos + 1] = my_list[scan_pos]
             scan_pos = scan_pos - 1
-            iloop_run += 1
+            inner_insert_loop_run += 1
 
         # Everything's been moved out of the way, insert
         # the key into the correct location
         my_list[scan_pos + 1] = key_value
-    print(oloop_run)
-    print(iloop_run)
+    print(outer_insert_loop_run)
+    print(inner_insert_loop_run)
 
 
 # This will point out a list

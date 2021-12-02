@@ -137,13 +137,33 @@ class MyGame(arcade.Window):
         #     bee.change_x *= -1
             self.bee_list.append(bee)
 
+        for i in range(GEM_COUNT):
 
-        # for i in range(GEM_COUNT):
+            gem = arcade.Sprite("gemYellow.png", 0.6)
 
+            # Boolean variable if we successfully placed the gem
+            gem_placed_well = False
+
+            # Keep trying until success
+            while not gem_placed_well:
+                # Position the gem
+                gem.center_x = random.randrange(200, 1200)
+                gem.center_y = random.randrange(414, 1150)
+
+                # See if the gem is hitting a wall/rock
+                wall_hit_list = arcade.check_for_collision_with_list(gem, self.wall_list)
+
+                # See if the gem is hitting another gem
+                gem_hit_list = arcade.check_for_collision_with_list(gem, self.gem_list)
+
+                if len(wall_hit_list) == 0 and len(gem_hit_list) == 0:
+                    gem_placed_well = True
+
+            # Add the gem to the lists
+            self.gem_list.append(gem)
 
         if self.tile_map.background_color:
             arcade.set_background_color(self.tile_map.background_color)
-
 
         self.physics_engine = arcade.PhysicsEnginePlatformer(self.player_sprite,
                                                              self.wall_list,
