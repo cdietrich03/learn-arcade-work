@@ -55,12 +55,44 @@ version of the code that was previously running, it would be easy to compare
 the new code with the old code in order to determine the error.
     While testing the accuracy of code, it is most important to run the program.
 If the program crashes, the easiest way to debug it is to look at the error it
-outputs and determine what this means. If the error line is hard to interpret or
-if I do not know what it means, I check the errors that I or others normally make
+outputs and determine what this means. Usually, the error puts a link to the line
+that is the problem in the code. If the error line is hard to interpret or if I
+do not know what it means, I check the errors that I or others normally make
 within code. For example, in a function, it is easy to forget the colon after
 the creation of it. The error output from this is not very good, so it is
 important to check general errors that many make just in case I made those same
 mistakes.
+    Once the program is running, one other issue could be if you have the correct
+answer. One way we can know if the output is correct is whether the math makes
+sense. This was easiest when working with code that sorts numbers in a list.
+It is easy to determine how many times the list should have run in order to
+sort the program, however, it is also important to check. We can check whether
+the loop ran the right amount of times by creating a running total and printing it
+out. This number
 
 3. -try running the code, if error locate line, in functions make sure there are colons(check normal errors)
 4. -original ideas, algorithms can crash
+    Numerical methods cannot always be used to make decisions because along
+with every decision, there are both pros and cons. Weighing those pros and
+cons is important in the decision-making process. The decision should not
+be randomly chosen, and sometimes a choice may be made that has more cons.
+That aspect of decision-making is important in life, and it would take the
+human part out of being human.
+    We cannot simply replace humans with algorithms because that would become
+extremely monotonous. Although algorithms are methodical and can help to some
+extent, but algorithms can crash and in that case humans would have to be
+trained to fix that. Humans can come up with original ideas that are new and
+innovative and could help to benefit society. In the same way humans cannot
+be replaced by algorithms, students should not be replaced by a grade or test
+score. A student may not be good at taking tests, but they may excel at doing
+a certain project. A student's capacity to do well cannot be solely based on
+how well they do on tests because students may be better at a different way
+of measuring understanding. We can't evaluate a teacher only on how well their
+students do because we have no idea if those students want to learn. The teacher
+only has so much control over whether their students are doing the best they can.
+If some students fail, it may be out of the teacher's control.
+    The limitation to evaluating athletes only on their stats is how much that can
+become a part of the athlete's life. Telling a person their worth is only as good
+as a number is harmful to a person's well-being. Outside of being an athlete,
+their life has much more to it, and they deserve to be seen as a whole person and
+not just a single number or stat.

@@ -22,7 +22,7 @@ TEXTURE_LEFT = 0
 TEXTURE_RIGHT = 1
 TEXTURE_STRAIGHT = 2
 BEE_COUNT = 30
-GEM_COUNT = 30
+COIN_COUNT = 30
 
 
 class Bee(arcade.Sprite):
@@ -72,7 +72,7 @@ class MyGame(arcade.Window):
         # Sprite lists
         self.player_list = None
         self.wall_list = None
-        self.gem_list = None
+        self.coin_list = None
         self.bee_list = None
         self.score = 0
         self.game_over = False
@@ -91,27 +91,27 @@ class MyGame(arcade.Window):
 
     def setup(self):
         """ Set up the game and initialize the variables. """
-
-
         # Sprite lists
         self.player_list = arcade.SpriteList()
         self.wall_list = arcade.SpriteList()
-        self.gem_list = arcade.SpriteList()
+        self.coin_list = arcade.SpriteList()
         self.bee_list = arcade.SpriteList()
 
-        # Set up the player
+        # Set up the player, image from kenney.nl
         self.player_sprite = arcade.Sprite("alienPink_front.png", scale=0.3)
         self.player_sprite.center_x = 100
         self.player_sprite.center_y = 100
         self.player_list.append(self.player_sprite)
 
         map_name = "Final.json"
+
         self.tile_map = arcade.load_tilemap(map_name, scaling=SPRITE_SCALING)
 
         self.wall_list = self.tile_map.sprite_lists["walls"]
 
         for i in range(BEE_COUNT):
             bee = Bee("bee.png", sprite_scaling=0.2)
+            # image from kenney.nl
             bee_placed_successfully = False
 
             # Keep trying until success
@@ -137,30 +137,31 @@ class MyGame(arcade.Window):
         #     bee.change_x *= -1
             self.bee_list.append(bee)
 
-        for i in range(GEM_COUNT):
+        for i in range(COIN_COUNT):
 
-            gem = arcade.Sprite("gemYellow.png", 0.6)
+            coin = arcade.Sprite("coinGold.png", 0.2)
+            # image from kenney.nl
 
-            # Boolean variable if we successfully placed the gem
-            gem_placed_well = False
+            # Boolean variable if we successfully placed the coin
+            coin_placed_well = False
 
             # Keep trying until success
-            while not gem_placed_well:
-                # Position the gem
-                gem.center_x = random.randrange(200, 1200)
-                gem.center_y = random.randrange(414, 1150)
+            while not coin_placed_well:
+                # Position the coin
+                coin.center_x = random.randrange(200, 1200)
+                coin.center_y = random.randrange(414, 1150)
 
-                # See if the gem is hitting a wall/rock
-                wall_hit_list = arcade.check_for_collision_with_list(gem, self.wall_list)
+                # See if the coin is hitting a wall/rock
+                wall_hit_list = arcade.check_for_collision_with_list(coin, self.wall_list)
 
-                # See if the gem is hitting another gem
-                gem_hit_list = arcade.check_for_collision_with_list(gem, self.gem_list)
+                # See if the coin is hitting another coin
+                coin_hit_list = arcade.check_for_collision_with_list(coin, self.coin_list)
 
-                if len(wall_hit_list) == 0 and len(gem_hit_list) == 0:
-                    gem_placed_well = True
+                if len(wall_hit_list) == 0 and len(coin_hit_list) == 0:
+                    coin_placed_well = True
 
-            # Add the gem to the lists
-            self.gem_list.append(gem)
+            # Add the coin to the lists
+            self.coin_list.append(coin)
 
         if self.tile_map.background_color:
             arcade.set_background_color(self.tile_map.background_color)
@@ -185,7 +186,7 @@ class MyGame(arcade.Window):
         # Draw all the sprites.
         self.wall_list.draw()
         self.player_list.draw()
-        self.gem_list.draw()
+        self.coin_list.draw()
         self.bee_list.draw()
 
         # Select the (unscrolled) camera for our GUI
