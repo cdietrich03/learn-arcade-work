@@ -5,94 +5,106 @@ Christina Dietrich
 1 December 2021
 
 
-    Upon deciding whether to use an "if" statement, I determine if there are
+1.   Deciding whether or to use a loop, I have to determine which kind of loop
+I want. When I know the number of times I want to loop, I use a "for" loop. When
+I want the loop to go until something else happens, I use a "while" loop. An
+example of a "for" loop would be in the loopy lab when I wanted the rectangles
+to be drawn a certain amount of times. I used the "for" loop for it to draw 30
+rectangles in a row and 30 rectangles in a column. In the camel lab, I used a
+"while" loop to run my program until the player won or lost. The text questions
+cycled until the player either won or lose the program.
+   Upon deciding whether to use an "if" statement, I determine if there are
 multiple options I want as a result. For example, when I wanted my camel
 game to do specific things based on the user's choice, I used "if" statements
-so that each option (a, b, c, d, e) produces a different result. Deciding whether
-or to use a loop, I have to determine which kind of loop I want. When I know the
-number of times I want to loop, I use a "for" loop. When I want the loop to go
-until something else happens, I use a "while" loop. An example of a "for" loop
-would be in the loopy lab when I wanted the rectangles to be drawn a certain
-amount of times. I used the "for" loop for it nto draw 30 rectangles in a row and
-30 rectangles in a column. In the camel lab, I used a "while" loop to run my
-program until the player won or lost. The text questions cycled until the player
-either won or lose the program.
-    Using a list can come in handy when I wanted to place every element into a
-specific place or change words to have numerical values. An example of using a
-list would be in the spell check lab when I wanted each word in the dictionary
-to be assigned to a value in the list. This made it easy to compare the words in
-the dictionary to the words in the book by running through each position in the
-list. Using a function is easy especially when drawing a scene and simplifying
-code. In lab three, I used the idea of functions
-to draw multiple of the same items while only typing the x and y variables.
-The idea of classes can aid in the creation of separate items under the same
-type of functioning. For example, in lab 8, I used the idea of classes to create
-separate code for keys, cacti, and the player. They were all able to be
-referenced later in the code by utilizing the class name.
-    In order to communicate a solution to a certain problem, it is important to
+so that each option (a, b, c, d, e) produces a different result. Using a list
+can come in handy when I wanted to place every element into a specific place or
+change words to have numerical values. An example of using a list would be in
+the spell check lab when I wanted each word in the dictionary to be assigned to
+a value in the list. This made it easy to compare the words in the dictionary to
+the words in the book by running through each position in the list.
+    Using a function is easy especially when drawing a scene and simplifying
+code. In lab three, I used the idea of functions to draw multiple of the same
+items while only typing the x and y variables. The idea of classes can aid in
+the creation of separate items under the same type of functioning. For example,
+in lab 8, I used the idea of classes to create separate code for keys, cacti,
+and the player. They were all able to be referenced later in the code by
+utilizing the class name.
+
+2.    In order to communicate a solution to a certain problem, it is important to
 be descriptive in the solution. In coding, this is especially important
 throughout many aspects of a program. One way to be descriptive is through
 commenting. Commenting in a code can elaborate on what a certain line of code
 is, especially if it may be unclear to the reader of the code. Another way to
 be descriptive in coding is to have descriptive names of functions. For example,
 defining a function as "h" instead of "draw_house" would be confusing to a
-person trying to interpret or change the code. One other way to be descriptive
-inside of code is naming variables specifically. This goes along with naming
-function, but may be easier to label in a non-specific way. Instead of calling
-a variable just x or y, it is better to name a variable with something like row
-or column in order for an easier interpretation of the code.
-    In the same way that description is important, the structure of the code is
-also important. It is easy to get carried away and have one code chunk fo the
-entirety of the code, but this is hard to understand. In order to make code
-easier to interpret, it is important to chunk specific pieces of code by
-separating it with blank lines above and below it. This is easiest to do based
-on separate topics within the code.
+person trying to interpret or change the code.
+    One other way to be descriptive inside of code is naming variables
+specifically. This goes along with naming function, but may be easier to label
+in a non-specific way. Instead of calling a variable just x or y, it is better
+to name a variable with something like row or column in order for an easier
+interpretation of the code. In the same way that description is important, the
+structure of the code is also important. It is easy to get carried away and have
+one code chunk fo the entirety of the code, but this is hard to understand. In
+order to make code easier to interpret, it is important to chunk specific pieces
+of code by separating it with blank lines above and below it. This is easiest to
+do in relation to separate topics within the code.
     It is also important to keep track of changes within code. When trying to
 communicate code with someone else or having multiple editors of on piece of code,
 it is important to save keep track of what has been changed. For example, if
 something in the code crashes that was previously running, if you still have the
 version of the code that was previously running, it would be easy to compare
 the new code with the old code in order to determine the error.
-    While testing the accuracy of code, it is most important to run the program.
+
+3.    While testing the accuracy of code, it is most important to run the program.
 If the program crashes, the easiest way to debug it is to look at the error it
 outputs and determine what this means. Usually, the error puts a link to the line
-that is the problem in the code. If the error line is hard to interpret or if I
-do not know what it means, I check the errors that I or others normally make
-within code. For example, in a function, it is easy to forget the colon after
-the creation of it. The error output from this is not very good, so it is
-important to check general errors that many make just in case I made those same
-mistakes.
+that is the problem in the code. Looking at this line can be an easy way to find
+a solution. If the error line is hard to interpret or if I do not know what it
+means, I check the errors that I or others normally make within code. For example,
+in a function, it is easy to forget the colon after the creation of it. The error
+output from this is not very good, so it is important to check general errors
+that many make just in case I made those same mistakes.
     Once the program is running, one other issue could be if you have the correct
 answer. One way we can know if the output is correct is whether the math makes
 sense. This was easiest when working with code that sorts numbers in a list.
 It is easy to determine how many times the list should have run in order to
 sort the program, however, it is also important to check. We can check whether
 the loop ran the right amount of times by creating a running total and printing it
-out. This number
+out. This number should be around the same number that was calculated previously.
+If it is not, it is evident that something is wrong within the code.
+    Another way to determine if the program is running correctly is to print out
+what needs to be returned. On many assignments, we were told to return values
+in order for them to be used in another part of the program. Returned values are
+not seen visibly like something that is printed out. An easy way to see if what
+is being returned is correct is to print out the value that is being returned.
+    One final way to determine whether a program is accurate, specifically a
+game, is to play it or have someone else play it. With the camel game, I got my
+friends to play the game to make sure it would actually work. When I caught an
+error like the camel will never die, or an oasis has never been found in any game,
+I was able to edit my code so that the game would work correctly.
 
-3. -try running the code, if error locate line, in functions make sure there are colons(check normal errors)
-4. -original ideas, algorithms can crash
-    Numerical methods cannot always be used to make decisions because along
-with every decision, there are both pros and cons. Weighing those pros and
-cons is important in the decision-making process. The decision should not
-be randomly chosen, and sometimes a choice may be made that has more cons.
-That aspect of decision-making is important in life, and it would take the
-human part out of being human.
-    We cannot simply replace humans with algorithms because that would become
-extremely monotonous. Although algorithms are methodical and can help to some
-extent, but algorithms can crash and in that case humans would have to be
+4.    Numerical methods cannot always be used to make decisions because along
+with every decision, there are both pros and cons. Weighing those pros and cons
+is important in the decision-making process. The decision should not be randomly
+chosen, and sometimes a choice may be made that has more cons. That aspect of
+decision-making is important in life, and it would take the human part out of
+being human. We cannot simply replace humans with algorithms because that would
+become extremely monotonous. Although algorithms are methodical and can help to
+some extent, algorithms can crash and in that case humans would have to be
 trained to fix that. Humans can come up with original ideas that are new and
-innovative and could help to benefit society. In the same way humans cannot
-be replaced by algorithms, students should not be replaced by a grade or test
-score. A student may not be good at taking tests, but they may excel at doing
-a certain project. A student's capacity to do well cannot be solely based on
-how well they do on tests because students may be better at a different way
-of measuring understanding. We can't evaluate a teacher only on how well their
-students do because we have no idea if those students want to learn. The teacher
-only has so much control over whether their students are doing the best they can.
-If some students fail, it may be out of the teacher's control.
+innovative and could help to benefit society.
+    In the same way humans cannot be replaced by algorithms, students should not
+be replaced by a grade or test score. A student may not be good at taking tests,
+but they may excel at doing a certain project. A student's capacity to do well
+cannot be solely based on how well they do on tests because students may be
+better at a different way of measuring understanding. We can't evaluate a teacher
+only on how well their students do because we have no idea if those students
+want to learn. The teacher only has so much control over whether their students
+are doing the best they can. If some students fail, it may be out of the
+teacher's control.
     The limitation to evaluating athletes only on their stats is how much that can
 become a part of the athlete's life. Telling a person their worth is only as good
-as a number is harmful to a person's well-being. Outside of being an athlete,
-their life has much more to it, and they deserve to be seen as a whole person and
-not just a single number or stat.
+as a number is harmful to a person's well-being. This would be the same as
+telling a student their worth is only as good as their test scores. Outside of
+being an athlete, their life has much more to it, and they deserve to be seen as
+a whole person and not just a single number or stat.
