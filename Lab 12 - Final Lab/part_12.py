@@ -1,16 +1,17 @@
-
+# Create game where win if get to top and try to win quickest, more enemies spawn over time
+# reach gold star in top right corner
 import random
 import arcade
 
 SPRITE_SCALING = 0.5
 
-DEFAULT_SCREEN_WIDTH = 800
+DEFAULT_SCREEN_WIDTH = 600
 DEFAULT_SCREEN_HEIGHT = 600
 SCREEN_TITLE = "Sprite Move with Scrolling Screen Example"
 
 # How many pixels to keep as a minimum margin between the character
 # and the edge of the screen.
-VIEWPORT_MARGIN = 220
+VIEWPORT_MARGIN = 100
 
 # How fast the camera pans to the player. 1.0 is instant.
 CAMERA_SPEED = 0.1
@@ -21,8 +22,38 @@ PLAYER_MOVEMENT_SPEED = 7
 TEXTURE_LEFT = 0
 TEXTURE_RIGHT = 1
 TEXTURE_STRAIGHT = 2
-BEE_COUNT = 30
-GEM_COUNT = 30
+BEE_COUNT = 10
+
+
+# class Menu(arcade.View):
+#
+#     def on_show(self):
+#         arcade.set_background_color(arcade.color.BANGLADESH_GREEN)
+#
+#     def on_draw(self):
+#         arcade.start_render()
+#         arcade.draw_text("Alien Dash", 300, 300, arcade.color.WHITE, 100)
+#         arcade.draw_text("Click for instructions")
+#
+#     def on_mouse_press(self, x: float, y: float, button: int, modifiers: int):
+#         instructions = Instructions()
+#         self.window.show_view(instructions)
+
+
+class Instructions(arcade.View):
+    def on_show(self):
+        arcade.set_background_color(arcade.color.AIR_FORCE_BLUE)
+
+        arcade.set_viewport(0, self.window.width, 0, self.window.height)
+
+    def on_draw(self):
+        arcade.start_render()
+        arcade.draw_text("HI", 300, 300, arcade.color.BLACK, 100)
+
+    def on_mouse_press(self, x: float, y: float, button: int, modifiers: int):
+        game = MyGame()
+        game.setup()
+        self.window.show_view(game)
 
 
 class Bee(arcade.Sprite):
@@ -60,26 +91,30 @@ class Bee(arcade.Sprite):
         #     self.change_x *= -1
 
 
-class MyGame(arcade.Window):
+class MyGame(arcade.View):
     """ Main application class. """
 
-    def __init__(self, width, height, title):
+    def __init__(self):
         """
         Initializer
         """
-        super().__init__(width, height, title, resizable=True)
+        super().__init__()
 
         # Sprite lists
         self.player_list = None
         self.wall_list = None
-        self.gem_list = None
+        self.star_list = None
         self.bee_list = None
         self.score = 0
         self.game_over = False
 
+        self.total_time = 0.0
+        self.output = "00:00:00"
+
         # Set up the player
         self.player_sprite = None
         self.bee_sprite = None
+        self.spawn_new_enemy_timer = 0
 
         # Physics engine so we don't run into walls.
         self.physics_engine = None
@@ -91,65 +126,39 @@ class MyGame(arcade.Window):
 
     def setup(self):
         """ Set up the game and initialize the variables. """
-
-
         # Sprite lists
         self.player_list = arcade.SpriteList()
         self.wall_list = arcade.SpriteList()
-        self.gem_list = arcade.SpriteList()
+        self.star_list = arcade.SpriteList()
         self.bee_list = arcade.SpriteList()
 
-        # Set up the player
+        self.total_time = 0.0
+
+        # Set up the player, image from kenney.nl
         self.player_sprite = arcade.Sprite("alienPink_front.png", scale=0.3)
         self.player_sprite.center_x = 100
         self.player_sprite.center_y = 100
         self.player_list.append(self.player_sprite)
 
         map_name = "Final.json"
+
         self.tile_map = arcade.load_tilemap(map_name, scaling=SPRITE_SCALING)
 
         self.wall_list = self.tile_map.sprite_lists["walls"]
 
-        for i in range(BEE_COUNT):
-            bee = Bee("bee.png", sprite_scaling=0.2)
-            bee_placed_successfully = False
-
-            # Keep trying until success
-            while not bee_placed_successfully:
-
-                bee.center_x = random.randrange(64, 1856)
-                bee.center_y = random.randrange(64, 1856)
-                bee.change_x = 5
-                bee.change_y = 0
-
-                wall_hit_list = arcade.check_for_collision_with_list(bee, self.wall_list)
-
-                # See if the coin is hitting another coin
-                bee_hit_list = arcade.check_for_collision_with_list(bee, self.bee_list)
-
-                if len(wall_hit_list) == 0 and len(bee_hit_list) == 0:
-                    # It is!
-                    bee_placed_successfully = True
-
-        # if bee.right > 1152:
-        #     bee.change_x *= -1
-        # if bee.left < 832:
-        #     bee.change_x *= -1
-            self.bee_list.append(bee)
-
-
-        # for i in range(GEM_COUNT):
-
+        star = arcade.Sprite("star.png", 0.2)
+        star.center_x = 1470
+        star.center_y = 1750
+        self.star_list.append(star)
 
         if self.tile_map.background_color:
             arcade.set_background_color(self.tile_map.background_color)
-
 
         self.physics_engine = arcade.PhysicsEnginePlatformer(self.player_sprite,
                                                              self.wall_list,
                                                              gravity_constant=0.5)
 
-        # Set the background color
+        print(len(self.bee_list))
 
     def on_draw(self):
         """
@@ -165,11 +174,14 @@ class MyGame(arcade.Window):
         # Draw all the sprites.
         self.wall_list.draw()
         self.player_list.draw()
-        self.gem_list.draw()
+        self.star_list.draw()
         self.bee_list.draw()
 
         # Select the (unscrolled) camera for our GUI
         self.camera_gui.use()
+
+        arcade.draw_text(self.output, 485, 570,
+                         arcade.color.WHITE, 20)
 
     def on_key_press(self, key, modifiers):
         """Called whenever a key is pressed. """
@@ -198,7 +210,43 @@ class MyGame(arcade.Window):
         # example though.)
 
         if not self.game_over:
+            self.spawn_new_enemy_timer += delta_time
+
+            if self.spawn_new_enemy_timer > 15:
+                self.spawn_new_enemy_timer = 0
+
+                for i in range(BEE_COUNT):
+                    bee = Bee("bee.png", sprite_scaling=0.2)
+                    # image from kenney.nl
+                    bee_placed_successfully = False
+
+                    # Keep trying until success
+                    while not bee_placed_successfully:
+
+                        bee.center_x = random.randrange(64, 1856)
+                        bee.center_y = random.randrange(64, 1856)
+                        bee.change_x = 5
+                        bee.change_y = 0
+
+                        wall_hit_list = arcade.check_for_collision_with_list(bee, self.wall_list)
+
+                        # See if the bee is hitting bee
+                        bee_hit_list = arcade.check_for_collision_with_list(bee, self.bee_list)
+
+                        if len(wall_hit_list) == 0 and len(bee_hit_list) == 0:
+                            # It is!
+                            bee_placed_successfully = True
+                    self.bee_list.append(bee)
+
             self.physics_engine.update()
+
+            self.total_time += delta_time
+
+            minutes = int(self.total_time) // 60
+            seconds = int(self.total_time) % 60
+            hundreths = int((self.total_time - seconds) * 100)
+
+            self.output = f"{minutes:02d}:{seconds:02d}:{hundreths:02d}"
 
             if len(arcade.check_for_collision_with_list(self.player_sprite, self.bee_list)) > 0:
                 self.game_over = True
@@ -219,7 +267,6 @@ class MyGame(arcade.Window):
             # Scroll the screen to the player
             self.scroll_to_player()
 
-
     def scroll_to_player(self):
         """
         Scroll the window to the player.
@@ -228,8 +275,8 @@ class MyGame(arcade.Window):
         pan.
         """
 
-        position = self.player_sprite.center_x - self.width / 2, \
-            self.player_sprite.center_y - self.height / 2
+        position = self.player_sprite.center_x - DEFAULT_SCREEN_WIDTH / 2, \
+            self.player_sprite.center_y - DEFAULT_SCREEN_HEIGHT / 2
         self.camera_sprites.move_to(position, CAMERA_SPEED)
 
     def on_resize(self, width, height):
@@ -243,8 +290,9 @@ class MyGame(arcade.Window):
 
 def main():
     """ Main function """
-    window = MyGame(DEFAULT_SCREEN_WIDTH, DEFAULT_SCREEN_HEIGHT, SCREEN_TITLE)
-    window.setup()
+    window = arcade.Window(DEFAULT_SCREEN_WIDTH, DEFAULT_SCREEN_HEIGHT, "Alien Dash")
+    start_view = Instructions()
+    window.show_view(start_view)
     arcade.run()
 
 
