@@ -86,6 +86,7 @@ class MyGame(arcade.View):
         self.star_list = None
         self.bee_list = None
         self.game_over = False
+        self.lose_sound = None
 
         # For the timer
         self.total_time = 0.0
@@ -174,6 +175,8 @@ class MyGame(arcade.View):
         if key == arcade.key.UP:
             if self.physics_engine.can_jump():
                 self.player_sprite.change_y = 12
+                jump_sound = arcade.load_sound("arcade_resources_sounds_jump4.wav")
+                arcade.play_sound(jump_sound)
 
         elif key == arcade.key.LEFT:
             self.player_sprite.change_x = -PLAYER_MOVEMENT_SPEED
@@ -236,6 +239,9 @@ class MyGame(arcade.View):
 
             # If the player collides with a bee, send to the game over screen
             if len(arcade.check_for_collision_with_list(self.player_sprite, self.bee_list)) > 0:
+                if not self.lose_sound:
+                    self.lose_sound = arcade.load_sound(":resources:sounds/gameover5.wav")
+                    arcade.play_sound(self.lose_sound)
                 self.game_over = True
                 game_over_view = GameOver()
                 game_over_view.total_time = self.total_time
