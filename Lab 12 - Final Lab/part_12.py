@@ -348,14 +348,14 @@ class WinView(arcade.View):
 
     def on_draw(self):
         arcade.start_render()
-        arcade.draw_text("YOU WIN!", 140, 400, arcade.color.WHITE, 50)
-        arcade.draw_text("Click to play again", 215, 375, arcade.color.WHITE, 15)
+        arcade.draw_text("YOU WIN!", 140, 400, arcade.color.BLACK, 50)
+        arcade.draw_text("Click to play again", 215, 375, arcade.color.BLACK, 15)
 
         time_format = f"{round(self.total_time, 2)} seconds"
-        arcade.draw_text(f"Time: {time_format}", 210, 225, arcade.color.WHITE, 15)
+        arcade.draw_text(f"Time: {time_format}", 210, 225, arcade.color.BLACK, 15)
 
         output_bees = f"Bees on screen: {len(self.bee_list)}"
-        arcade.draw_text(output_bees, 210, 200, arcade.color.WHITE, 15)
+        arcade.draw_text(output_bees, 210, 200, arcade.color.BLACK, 15)
 
     # When the screen is pressed, play the game again
     def on_mouse_press(self, x: float, y: float, button: int, modifiers: int):
