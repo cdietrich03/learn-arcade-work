@@ -17,8 +17,6 @@ PLAYER_MOVEMENT_SPEED = 7
 
 # Amount of bees spawned at one time
 BEE_COUNT = 7
-#
-# done = False
 
 
 # Menu view for the screen
@@ -76,7 +74,8 @@ class Bee(arcade.Sprite):
 
 # The game view
 class MyGame(arcade.View):
-
+    # done = False
+    # while not done:
     def __init__(self):
         super().__init__()
 
@@ -182,6 +181,8 @@ class MyGame(arcade.View):
             self.player_sprite.change_x = -PLAYER_MOVEMENT_SPEED
         elif key == arcade.key.RIGHT:
             self.player_sprite.change_x = PLAYER_MOVEMENT_SPEED
+        # elif key == arcade.key.SPACE:
+        #     done = True
 
     def on_key_release(self, key, modifiers):
         # Make the game less touchy
@@ -295,6 +296,7 @@ class GameOver(arcade.View):
         self.total_time = 0
         self.bee_list = 0
 
+
     def on_show(self):
         arcade.set_background_color(arcade.color.BRICK_RED)
 
@@ -314,11 +316,6 @@ class GameOver(arcade.View):
         game = MyGame()
         game.setup()
         self.window.show_view(game)
-
-    # def on_key_press(self, key, modifiers):
-        # if key == arcade.key.SPACE:
-        #     done = True
-        #
 
 
 # Show this screen when the player wins
@@ -356,6 +353,42 @@ def main():
     window.show_view(start_view)
     arcade.run()
 
+
+#     high_score = get_high_score()
+#     current_score = 00.00
+#
+#     current_score = int(input(f"What is your score?"))
+#
+#     if current_score > high_score:
+#         print("New high score!")
+#         save_high_score(current_score)
+#     else:
+#         print("Better luck next time!")
+#
+#
+# def get_high_score():
+#     high_score_time = 00.00
+#     try:
+#         high_score_file = open("high_score")
+#         high_score_time = int(high_score_file.read())
+#         high_score_file.close()
+#         print(f"High score: {high_score_time}")
+#     except IOError:
+#         print(f"No high score")
+#     except ValueError:
+#         print("Starting with no high score")
+#
+#     return high_score_time
+#
+#
+# def save_high_score(new_high_score):
+#     try:
+#         high_score_file = open("high_score")
+#         high_score_file.write(str(new_high_score))
+#         high_score_file.close()
+#     except IOError:
+#         print(f"Not able to save high score")
+#
 
 if __name__ == "__main__":
     main()
