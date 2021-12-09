@@ -1,5 +1,6 @@
 # Create game where win if get to top and try to win quickest, more enemies spawn over time
 # reach gold star in top right corner
+# add levels
 import random
 import arcade
 
@@ -17,6 +18,8 @@ PLAYER_MOVEMENT_SPEED = 7
 
 # Amount of bees spawned at one time
 BEE_COUNT = 7
+BEE_LEFT = 0
+BEE_RIGHT = 1
 
 
 # Menu view for the screen
@@ -64,12 +67,27 @@ class Bee(arcade.Sprite):
 
         super().__init__(filename, sprite_scaling)
 
+        self.scale = 0.2
+        self.textures = []
+
+        texture = arcade.load_texture("bee.png")
+        self.textures.append(texture)
+        texture = arcade.load_texture("bee.png", flipped_horizontally=True)
+        self.textures.append(texture)
+
+        self.texture = texture
+
         self.change_x = 0
         self.change_y = 0
 
     def update(self):
         self.center_x += self.change_x
         self.center_y += self.change_y
+
+        if self.change_x < 0:
+            self.texture = self.textures[BEE_LEFT]
+        elif self.change_x > 0:
+            self.texture = self.textures[BEE_RIGHT]
 
 
 # The game view
