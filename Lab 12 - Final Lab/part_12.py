@@ -1,7 +1,9 @@
 # Create game where win if get to top and try to win quickest, more enemies spawn over time
 # reach gold star in top right corner
+
 # Need winning music, need losing music, background music, sound win jump, sound when hit star, sound when hit bee
 
+# add levels
 import random
 import arcade
 
@@ -19,8 +21,8 @@ PLAYER_MOVEMENT_SPEED = 7
 
 # Amount of bees spawned at one time
 BEE_COUNT = 7
-#
-# done = False
+BEE_LEFT = 0
+BEE_RIGHT = 1
 
 
 # Menu view for the screen
@@ -68,6 +70,16 @@ class Bee(arcade.Sprite):
 
         super().__init__(filename, sprite_scaling)
 
+        self.scale = 0.2
+        self.textures = []
+
+        texture = arcade.load_texture("bee.png")
+        self.textures.append(texture)
+        texture = arcade.load_texture("bee.png", flipped_horizontally=True)
+        self.textures.append(texture)
+
+        self.texture = texture
+
         self.change_x = 0
         self.change_y = 0
 
@@ -75,10 +87,16 @@ class Bee(arcade.Sprite):
         self.center_x += self.change_x
         self.center_y += self.change_y
 
+        if self.change_x < 0:
+            self.texture = self.textures[BEE_LEFT]
+        elif self.change_x > 0:
+            self.texture = self.textures[BEE_RIGHT]
+
 
 # The game view
 class MyGame(arcade.View):
-
+    # done = False
+    # while not done:
     def __init__(self):
         super().__init__()
 
@@ -88,7 +106,10 @@ class MyGame(arcade.View):
         self.star_list = None
         self.bee_list = None
         self.game_over = False
+
         self.tile_map = None
+        self.lose_sound = None
+
 
         # For the timer
         self.total_time = 0.0
@@ -183,11 +204,15 @@ class MyGame(arcade.View):
         if key == arcade.key.UP:
             if self.physics_engine.can_jump():
                 self.player_sprite.change_y = 12
+                jump_sound = arcade.load_sound("arcade_resources_sounds_jump4.wav")
+                arcade.play_sound(jump_sound)
 
         elif key == arcade.key.LEFT:
             self.player_sprite.change_x = -PLAYER_MOVEMENT_SPEED
         elif key == arcade.key.RIGHT:
             self.player_sprite.change_x = PLAYER_MOVEMENT_SPEED
+        # elif key == arcade.key.SPACE:
+        #     done = True
 
     def on_key_release(self, key, modifiers):
         # Make the game less touchy
@@ -246,7 +271,12 @@ class MyGame(arcade.View):
             bee_player_hit_list = arcade.check_for_collision_with_list(self.player_sprite, self.bee_list)
 
             # If the player collides with a bee, send to the game over screen
+
             if len(bee_player_hit_list) > 0:
+                if not self.lose_sound:
+                    self.lose_sound = arcade.load_sound(":resources:sounds/gameover5.wav")
+                    arcade.play_sound(self.lose_sound)
+
                 self.game_over = True
                 game_over_view = GameOver()
                 game_over_view.total_time = self.total_time
@@ -307,6 +337,7 @@ class GameOver(arcade.View):
         self.total_time = 0
         self.bee_list = 0
 
+
     def on_show(self):
         arcade.set_background_color(arcade.color.BRICK_RED)
 
@@ -327,11 +358,6 @@ class GameOver(arcade.View):
         game.setup()
         self.window.show_view(game)
 
-    # def on_key_press(self, key, modifiers):
-        # if key == arcade.key.SPACE:
-        #     done = True
-        #
-
 
 # Show this screen when the player wins
 class WinView(arcade.View):
@@ -345,14 +371,14 @@ class WinView(arcade.View):
 
     def on_draw(self):
         arcade.start_render()
-        arcade.draw_text("YOU WIN!", 140, 400, arcade.color.WHITE, 50)
-        arcade.draw_text("Click to play again", 215, 375, arcade.color.WHITE, 15)
+        arcade.draw_text("YOU WIN!", 140, 400, arcade.color.BLACK, 50)
+        arcade.draw_text("Click to play again", 215, 375, arcade.color.BLACK, 15)
 
         time_format = f"{round(self.total_time, 2)} seconds"
-        arcade.draw_text(f"Time: {time_format}", 210, 225, arcade.color.WHITE, 15)
+        arcade.draw_text(f"Time: {time_format}", 210, 225, arcade.color.BLACK, 15)
 
         output_bees = f"Bees on screen: {len(self.bee_list)}"
-        arcade.draw_text(output_bees, 210, 200, arcade.color.WHITE, 15)
+        arcade.draw_text(output_bees, 210, 200, arcade.color.BLACK, 15)
 
     # When the screen is pressed, play the game again
     def on_mouse_press(self, x: float, y: float, button: int, modifiers: int):
@@ -368,6 +394,42 @@ def main():
     window.show_view(start_view)
     arcade.run()
 
+
+#     high_score = get_high_score()
+#     current_score = 00.00
+#
+#     current_score = int(input(f"What is your score?"))
+#
+#     if current_score > high_score:
+#         print("New high score!")
+#         save_high_score(current_score)
+#     else:
+#         print("Better luck next time!")
+#
+#
+# def get_high_score():
+#     high_score_time = 00.00
+#     try:
+#         high_score_file = open("high_score")
+#         high_score_time = int(high_score_file.read())
+#         high_score_file.close()
+#         print(f"High score: {high_score_time}")
+#     except IOError:
+#         print(f"No high score")
+#     except ValueError:
+#         print("Starting with no high score")
+#
+#     return high_score_time
+#
+#
+# def save_high_score(new_high_score):
+#     try:
+#         high_score_file = open("high_score")
+#         high_score_file.write(str(new_high_score))
+#         high_score_file.close()
+#     except IOError:
+#         print(f"Not able to save high score")
+#
 
 if __name__ == "__main__":
     main()
