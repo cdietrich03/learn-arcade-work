@@ -1,5 +1,7 @@
 # Create game where win if get to top and try to win quickest, more enemies spawn over time
 # reach gold star in top right corner
+# Need winning music, need losing music, background music, sound win jump, sound when hit star, sound when hit bee
+
 import random
 import arcade
 
@@ -47,7 +49,7 @@ class Instructions(arcade.View):
     def on_draw(self):
         arcade.start_render()
         arcade.draw_text("Instructions", 140, 400, arcade.color.BLACK, 50)
-        arcade.draw_text("Jump to the top of the game in as quickly as possible.", 60, 300, arcade.color.DARK_GRAY, 15)
+        arcade.draw_text("Jump to the top of the game as quickly as possible.", 60, 310, arcade.color.DARK_GRAY, 15)
         arcade.draw_text("Do not touch any bees along the way.", 120, 275, arcade.color.DARK_GRAY, 15)
         arcade.draw_text("As time continues, more bees will spawn.", 105, 250, arcade.color.DARK_GRAY, 15)
         arcade.draw_text("Use the arrow keys to move around.", 125, 225, arcade.color.DARK_GRAY, 15)
@@ -86,6 +88,7 @@ class MyGame(arcade.View):
         self.star_list = None
         self.bee_list = None
         self.game_over = False
+        self.tile_map = None
 
         # For the timer
         self.total_time = 0.0
@@ -95,6 +98,9 @@ class MyGame(arcade.View):
         self.player_sprite = None
         self.bee_sprite = None
         self.spawn_new_enemy_timer = 0
+
+        self.level = 1
+        self.max_level = 2
 
         # Physics engine so we don't run into walls.
         self.physics_engine = None
@@ -120,16 +126,18 @@ class MyGame(arcade.View):
         self.player_sprite.center_y = 100
         self.player_list.append(self.player_sprite)
 
-        # Load the map from tiled and add them to the wall list
-        map_name = "Final.json"
-        self.tile_map = arcade.load_tilemap(map_name, scaling=SPRITE_SCALING)
-        self.wall_list = self.tile_map.sprite_lists["walls"]
-
-        # set up star, image from kenney.nl
+        # set up star, image from kenney.nl, 1470, 1750
         star = arcade.Sprite("star.png", 0.4)
         star.center_x = 1470
         star.center_y = 1750
         self.star_list.append(star)
+
+        self.load_level(self.level)
+
+    def load_level(self, level):
+        map_name = f"level_{level}.json"
+        self.tile_map = arcade.load_tilemap(map_name, scaling=SPRITE_SCALING)
+        self.wall_list = self.tile_map.sprite_lists["walls"]
 
         # Use the background color of the tile map
         if self.tile_map.background_color:
@@ -138,6 +146,7 @@ class MyGame(arcade.View):
         self.physics_engine = arcade.PhysicsEnginePlatformer(self.player_sprite,
                                                              self.wall_list,
                                                              gravity_constant=0.5)
+
 
     # Do not show the mouse
     def on_show(self):
@@ -234,8 +243,10 @@ class MyGame(arcade.View):
             # The clock all put together
             self.output = f"{minutes:02d}:{seconds:02d}:{hundreths:02d}"
 
+            bee_player_hit_list = arcade.check_for_collision_with_list(self.player_sprite, self.bee_list)
+
             # If the player collides with a bee, send to the game over screen
-            if len(arcade.check_for_collision_with_list(self.player_sprite, self.bee_list)) > 0:
+            if len(bee_player_hit_list) > 0:
                 self.game_over = True
                 game_over_view = GameOver()
                 game_over_view.total_time = self.total_time
@@ -246,7 +257,14 @@ class MyGame(arcade.View):
             self.bee_list.update()
 
             # If the player collides with the star, send to the win screen
-            if len(arcade.check_for_collision_with_list(self.player_sprite, self.star_list)) > 0:
+            if len(arcade.check_for_collision_with_list(self.player_sprite, self.star_list)) == 1:
+                if self.level < self.max_level:
+                    self.level += 1
+                    self.load_level(self.level)
+                    self.player_sprite.center_x = 100
+                    self.player_sprite.center_y = 100
+
+            elif len(arcade.check_for_collision_with_list(self.player_sprite, self.star_list)) == 2:
                 self.game_over = True
                 win_view = WinView()
                 win_view.total_time = self.total_time
