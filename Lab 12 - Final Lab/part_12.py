@@ -1,16 +1,11 @@
-# Create game where win if get to top and try to win quickest, more enemies spawn over time
-# reach gold star in top right corner
 
-# Need winning music, need losing music, background music, sound win jump, sound when hit star, sound when hit bee
-
-# add levels
 import random
 import arcade
 
 SPRITE_SCALING = 0.5
 
 DEFAULT_SCREEN_WIDTH = 800
-DEFAULT_SCREEN_HEIGHT = 800
+DEFAULT_SCREEN_HEIGHT = 600
 SCREEN_TITLE = "Alien Dash"
 
 # How fast the camera pans to the player. 1.0 is instant.
@@ -33,8 +28,8 @@ class Menu(arcade.View):
 
     def on_draw(self):
         arcade.start_render()
-        arcade.draw_text("Alien Dash", 250, 500, arcade.color.WHITE, 50)
-        arcade.draw_text("Click for instructions", 300, 475, arcade.color.WHITE_SMOKE, 15)
+        arcade.draw_text("Alien Dash", 250, 300, arcade.color.WHITE, 50)
+        arcade.draw_text("Click for instructions", 300, 275, arcade.color.WHITE_SMOKE, 15)
 
     def on_mouse_press(self, x: float, y: float, button: int, modifiers: int):
         # When the screen is pressed, move to instruction screen
@@ -50,12 +45,12 @@ class Instructions(arcade.View):
 
     def on_draw(self):
         arcade.start_render()
-        arcade.draw_text("Instructions", 230, 555, arcade.color.BLACK, 50)
-        arcade.draw_text("Jump to the top of the game as quickly as possible.", 165, 530, arcade.color.DARK_GRAY, 15)
-        arcade.draw_text("Do not touch any bees along the way.", 225, 505, arcade.color.DARK_GRAY, 15)
-        arcade.draw_text("As time continues, more bees will spawn.", 220, 480, arcade.color.DARK_GRAY, 15)
-        arcade.draw_text("Use the arrow keys to move around.", 230, 455, arcade.color.DARK_GRAY, 15)
-        arcade.draw_text("Hit the gold star in order to win the game.", 210, 430, arcade.color.DARK_GRAY, 15)
+        arcade.draw_text("Instructions", 230, 355, arcade.color.BLACK, 50)
+        arcade.draw_text("Jump to the top of the game as quickly as possible.", 165, 330, arcade.color.DARK_GRAY, 15)
+        arcade.draw_text("Do not touch any bees along the way.", 225, 305, arcade.color.DARK_GRAY, 15)
+        arcade.draw_text("As time continues, more bees will spawn.", 220, 280, arcade.color.DARK_GRAY, 15)
+        arcade.draw_text("Use the arrow keys to move around.", 230, 255, arcade.color.DARK_GRAY, 15)
+        arcade.draw_text("Hit the gold star in order to win the game.", 210, 230, arcade.color.DARK_GRAY, 15)
 
     def on_mouse_press(self, x: float, y: float, button: int, modifiers: int):
         # After click, move to the game view
@@ -187,12 +182,12 @@ class MyGame(arcade.View):
         self.camera_gui.use()
 
         # Show the timer on the screen
-        arcade.draw_text(self.output, 685, 770,
+        arcade.draw_text(self.output, 685, 570,
                          arcade.color.WHITE, 20)
 
         # Show the amount of bees on the screen
         output = f"Bees on screen: {len(self.bee_list)}"
-        arcade.draw_text(output, 10, 160, arcade.color.WHITE, 12)
+        arcade.draw_text(output, 10, 20, arcade.color.WHITE, 12)
 
     def on_key_press(self, key, modifiers):
         jump_sound = arcade.load_sound("arcade_resources_sounds_jump4.wav")
@@ -207,8 +202,6 @@ class MyGame(arcade.View):
             self.player_sprite.change_x = -PLAYER_MOVEMENT_SPEED
         elif key == arcade.key.RIGHT:
             self.player_sprite.change_x = PLAYER_MOVEMENT_SPEED
-        # elif key == arcade.key.SPACE:
-        #     done = True
 
     def on_key_release(self, key, modifiers):
         # Make the game less touchy
@@ -329,14 +322,14 @@ class GameOver(arcade.View):
 
     def on_draw(self):
         arcade.start_render()
-        arcade.draw_text("GAME OVER", 200, 500, arcade.color.WHITE, 50)
-        arcade.draw_text("Click to play again", 320, 475, arcade.color.WHITE, 15)
+        arcade.draw_text("GAME OVER", 200, 300, arcade.color.WHITE, 50)
+        arcade.draw_text("Click to play again", 320, 275, arcade.color.WHITE, 15)
 
         time_format = f"{round(self.total_time, 2)} seconds"
-        arcade.draw_text(f"Time: {time_format}", 310, 425, arcade.color.WHITE, 15)
+        arcade.draw_text(f"Time: {time_format}", 310, 225, arcade.color.WHITE, 15)
 
         output_bees = f"Bees on screen: {len(self.bee_list)}"
-        arcade.draw_text(output_bees, 315, 400, arcade.color.WHITE, 15)
+        arcade.draw_text(output_bees, 315, 200, arcade.color.WHITE, 15)
 
     # When the screen is clicked, move back to the game
     def on_mouse_press(self, x: float, y: float, button: int, modifiers: int):
@@ -357,14 +350,14 @@ class WinView(arcade.View):
 
     def on_draw(self):
         arcade.start_render()
-        arcade.draw_text("YOU WIN!", 240, 600, arcade.color.BLACK, 50)
-        arcade.draw_text("Click to play again", 315, 575, arcade.color.BLACK, 15)
+        arcade.draw_text("YOU WIN!", 240, 400, arcade.color.BLACK, 50)
+        arcade.draw_text("Click to play again", 315, 375, arcade.color.BLACK, 15)
 
         time_format = f"{round(self.total_time, 2)} seconds"
-        arcade.draw_text(f"Time: {time_format}", 310, 425, arcade.color.BLACK, 15)
+        arcade.draw_text(f"Time: {time_format}", 310, 225, arcade.color.BLACK, 15)
 
         output_bees = f"Bees on screen: {len(self.bee_list)}"
-        arcade.draw_text(output_bees, 320, 400, arcade.color.BLACK, 15)
+        arcade.draw_text(output_bees, 320, 200, arcade.color.BLACK, 15)
 
     # When the screen is pressed, play the game again
     def on_mouse_press(self, x: float, y: float, button: int, modifiers: int):
@@ -398,8 +391,7 @@ class LevelTwo(arcade.View):
         self.bee_sprite = None
         self.spawn_new_enemy_timer = 0
 
-        self.level = 1
-        self.max_level = 2
+        self.level = 0
 
         # Physics engine so we don't run into walls.
         self.physics_engine = None
@@ -468,7 +460,7 @@ class LevelTwo(arcade.View):
         self.camera_gui.use()
 
         # Show the timer on the screen
-        arcade.draw_text(self.output, 685, 770,
+        arcade.draw_text(self.output, 685, 570,
                          arcade.color.WHITE, 20)
 
         # Show the amount of bees on the screen
@@ -561,10 +553,9 @@ class LevelTwo(arcade.View):
             # If the player collides with a bee, send to the game over screen
 
             if len(bee_player_hit_list) > 0:
-                # if not self.lose_sound:
-                #     self.lose_sound = arcade.load_sound(":resources:sounds/gameover5.wav")
-                #     arcade.play_sound(self.lose_sound)
-
+                if not self.lose_sound:
+                    self.lose_sound = arcade.load_sound(":resources:sounds/gameover5.wav")
+                    arcade.play_sound(self.lose_sound)
                 self.game_over = True
                 game_over_view = GameOver()
                 game_over_view.total_time = self.total_time
@@ -611,8 +602,8 @@ class ClickForTwo(arcade.View):
 
     def on_draw(self):
         arcade.start_render()
-        arcade.draw_text("YOU WIN!", 240, 600, arcade.color.BLACK, 50)
-        arcade.draw_text("Click to play 2", 315, 575, arcade.color.BLACK, 15)
+        arcade.draw_text("YOU WIN!", 240, 400, arcade.color.BLACK, 50)
+        arcade.draw_text("Click to play 2", 315, 375, arcade.color.BLACK, 15)
 
     def on_mouse_press(self, x: float, y: float, button: int, modifiers: int):
         # After click, move to the game view
