@@ -9,8 +9,8 @@ import arcade
 
 SPRITE_SCALING = 0.5
 
-DEFAULT_SCREEN_WIDTH = 600
-DEFAULT_SCREEN_HEIGHT = 600
+DEFAULT_SCREEN_WIDTH = 800
+DEFAULT_SCREEN_HEIGHT = 800
 SCREEN_TITLE = "Alien Dash"
 
 # How fast the camera pans to the player. 1.0 is instant.
@@ -20,7 +20,7 @@ CAMERA_SPEED = 0.1
 PLAYER_MOVEMENT_SPEED = 7
 
 # Amount of bees spawned at one time
-BEE_COUNT = 5
+BEE_COUNT = 4
 BEE_LEFT = 0
 BEE_RIGHT = 1
 
@@ -33,8 +33,8 @@ class Menu(arcade.View):
 
     def on_draw(self):
         arcade.start_render()
-        arcade.draw_text("Alien Dash", 130, 300, arcade.color.WHITE, 50)
-        arcade.draw_text("Click for instructions", 190, 270, arcade.color.WHITE_SMOKE, 15)
+        arcade.draw_text("Alien Dash", 250, 500, arcade.color.WHITE, 50)
+        arcade.draw_text("Click for instructions", 300, 475, arcade.color.WHITE_SMOKE, 15)
 
     def on_mouse_press(self, x: float, y: float, button: int, modifiers: int):
         # When the screen is pressed, move to instruction screen
@@ -50,12 +50,12 @@ class Instructions(arcade.View):
 
     def on_draw(self):
         arcade.start_render()
-        arcade.draw_text("Instructions", 140, 400, arcade.color.BLACK, 50)
-        arcade.draw_text("Jump to the top of the game as quickly as possible.", 60, 310, arcade.color.DARK_GRAY, 15)
-        arcade.draw_text("Do not touch any bees along the way.", 120, 275, arcade.color.DARK_GRAY, 15)
-        arcade.draw_text("As time continues, more bees will spawn.", 105, 250, arcade.color.DARK_GRAY, 15)
-        arcade.draw_text("Use the arrow keys to move around.", 125, 225, arcade.color.DARK_GRAY, 15)
-        arcade.draw_text("Hit the gold star in order to win the game.", 105, 200, arcade.color.DARK_GRAY, 15)
+        arcade.draw_text("Instructions", 230, 555, arcade.color.BLACK, 50)
+        arcade.draw_text("Jump to the top of the game as quickly as possible.", 165, 530, arcade.color.DARK_GRAY, 15)
+        arcade.draw_text("Do not touch any bees along the way.", 225, 505, arcade.color.DARK_GRAY, 15)
+        arcade.draw_text("As time continues, more bees will spawn.", 220, 480, arcade.color.DARK_GRAY, 15)
+        arcade.draw_text("Use the arrow keys to move around.", 230, 455, arcade.color.DARK_GRAY, 15)
+        arcade.draw_text("Hit the gold star in order to win the game.", 210, 430, arcade.color.DARK_GRAY, 15)
 
     def on_mouse_press(self, x: float, y: float, button: int, modifiers: int):
         # After click, move to the game view
@@ -155,10 +155,6 @@ class MyGame(arcade.View):
         self.load_level(self.level)
 
     def load_level(self, level):
-        # map_name = f"level_{level}.json"
-        # self.tile_map = arcade.load_tilemap(map_name, scaling=SPRITE_SCALING)
-        # self.wall_list = self.tile_map.sprite_lists["walls"]
-
         self.tile_map = arcade.load_tilemap("level_1.json", scaling=SPRITE_SCALING)
         self.wall_list = self.tile_map.sprite_lists["walls"]
 
@@ -191,21 +187,21 @@ class MyGame(arcade.View):
         self.camera_gui.use()
 
         # Show the timer on the screen
-        arcade.draw_text(self.output, 485, 570,
+        arcade.draw_text(self.output, 685, 770,
                          arcade.color.WHITE, 20)
 
         # Show the amount of bees on the screen
         output = f"Bees on screen: {len(self.bee_list)}"
-        arcade.draw_text(output, 10, 20, arcade.color.WHITE, 12)
+        arcade.draw_text(output, 10, 160, arcade.color.WHITE, 12)
 
     def on_key_press(self, key, modifiers):
-
+        jump_sound = arcade.load_sound("arcade_resources_sounds_jump4.wav")
         # How high the sprite can jump when the up key is pressed
         if key == arcade.key.UP:
             if self.physics_engine.can_jump():
                 self.player_sprite.change_y = 12
-                # jump_sound = arcade.load_sound("arcade_resources_sounds_jump4.wav")
-                # arcade.play_sound(jump_sound)
+
+                arcade.play_sound(jump_sound)
 
         elif key == arcade.key.LEFT:
             self.player_sprite.change_x = -PLAYER_MOVEMENT_SPEED
@@ -285,9 +281,9 @@ class MyGame(arcade.View):
             # If the player collides with a bee, send to the game over screen
 
             if len(bee_player_hit_list) > 0:
-                # if not self.lose_sound:
-                #     self.lose_sound = arcade.load_sound(":resources:sounds/gameover5.wav")
-                #     arcade.play_sound(self.lose_sound)
+                if not self.lose_sound:
+                    self.lose_sound = arcade.load_sound(":resources:sounds/gameover5.wav")
+                    arcade.play_sound(self.lose_sound)
 
                 self.game_over = True
                 game_over_view = GameOver()
@@ -302,6 +298,8 @@ class MyGame(arcade.View):
             if len(arcade.check_for_collision_with_list(self.player_sprite, self.star_list)) > 0:
                 game = ClickForTwo()
                 self.window.show_view(game)
+                level_up_sound = arcade.load_sound("chipquest.wav")
+                arcade.play_sound(level_up_sound)
 
             # Scroll the screen to the player
             self.scroll_to_player()
@@ -331,14 +329,14 @@ class GameOver(arcade.View):
 
     def on_draw(self):
         arcade.start_render()
-        arcade.draw_text("GAME OVER", 100, 400, arcade.color.WHITE, 50)
-        arcade.draw_text("Click to play again", 210, 375, arcade.color.WHITE, 15)
+        arcade.draw_text("GAME OVER", 200, 500, arcade.color.WHITE, 50)
+        arcade.draw_text("Click to play again", 320, 475, arcade.color.WHITE, 15)
 
         time_format = f"{round(self.total_time, 2)} seconds"
-        arcade.draw_text(f"Time: {time_format}", 210, 225, arcade.color.WHITE, 15)
+        arcade.draw_text(f"Time: {time_format}", 310, 425, arcade.color.WHITE, 15)
 
         output_bees = f"Bees on screen: {len(self.bee_list)}"
-        arcade.draw_text(output_bees, 215, 200, arcade.color.WHITE, 15)
+        arcade.draw_text(output_bees, 315, 400, arcade.color.WHITE, 15)
 
     # When the screen is clicked, move back to the game
     def on_mouse_press(self, x: float, y: float, button: int, modifiers: int):
@@ -359,14 +357,14 @@ class WinView(arcade.View):
 
     def on_draw(self):
         arcade.start_render()
-        arcade.draw_text("YOU WIN!", 140, 400, arcade.color.BLACK, 50)
-        arcade.draw_text("Click to play again", 215, 375, arcade.color.BLACK, 15)
+        arcade.draw_text("YOU WIN!", 240, 600, arcade.color.BLACK, 50)
+        arcade.draw_text("Click to play again", 315, 575, arcade.color.BLACK, 15)
 
         time_format = f"{round(self.total_time, 2)} seconds"
-        arcade.draw_text(f"Time: {time_format}", 210, 225, arcade.color.BLACK, 15)
+        arcade.draw_text(f"Time: {time_format}", 310, 425, arcade.color.BLACK, 15)
 
         output_bees = f"Bees on screen: {len(self.bee_list)}"
-        arcade.draw_text(output_bees, 210, 200, arcade.color.BLACK, 15)
+        arcade.draw_text(output_bees, 320, 400, arcade.color.BLACK, 15)
 
     # When the screen is pressed, play the game again
     def on_mouse_press(self, x: float, y: float, button: int, modifiers: int):
@@ -470,21 +468,20 @@ class LevelTwo(arcade.View):
         self.camera_gui.use()
 
         # Show the timer on the screen
-        arcade.draw_text(self.output, 485, 570,
+        arcade.draw_text(self.output, 685, 770,
                          arcade.color.WHITE, 20)
 
         # Show the amount of bees on the screen
         output = f"Bees on screen: {len(self.bee_list)}"
-        arcade.draw_text(output, 10, 20, arcade.color.WHITE, 12)
+        arcade.draw_text(output, 10, 16, arcade.color.WHITE, 12)
 
     def on_key_press(self, key, modifiers):
-
+        jump_sound = arcade.load_sound("arcade_resources_sounds_jump4.wav")
         # How high the sprite can jump when the up key is pressed
         if key == arcade.key.UP:
             if self.physics_engine.can_jump():
                 self.player_sprite.change_y = 12
-                # jump_sound = arcade.load_sound("arcade_resources_sounds_jump4.wav")
-                # arcade.play_sound(jump_sound)
+                arcade.play_sound(jump_sound)
 
         elif key == arcade.key.LEFT:
             self.player_sprite.change_x = -PLAYER_MOVEMENT_SPEED
@@ -586,6 +583,9 @@ class LevelTwo(arcade.View):
                 self.window.set_mouse_visible(True)
                 self.window.show_view(win_view)
 
+                win_sound = arcade.load_sound("Jingle_Achievement_00.wav")
+                arcade.play_sound(win_sound)
+
             # Scroll the screen to the player
             self.scroll_to_player()
 
@@ -611,8 +611,8 @@ class ClickForTwo(arcade.View):
 
     def on_draw(self):
         arcade.start_render()
-        arcade.draw_text("YOU WIN!", 140, 400, arcade.color.BLACK, 50)
-        arcade.draw_text("Click to play 2", 215, 375, arcade.color.BLACK, 15)
+        arcade.draw_text("YOU WIN!", 240, 600, arcade.color.BLACK, 50)
+        arcade.draw_text("Click to play 2", 315, 575, arcade.color.BLACK, 15)
 
     def on_mouse_press(self, x: float, y: float, button: int, modifiers: int):
         # After click, move to the game view
@@ -628,42 +628,6 @@ def main():
     window.show_view(start_view)
     arcade.run()
 
-
-#     high_score = get_high_score()
-#     current_score = 00.00
-#
-#     current_score = int(input(f"What is your score?"))
-#
-#     if current_score > high_score:
-#         print("New high score!")
-#         save_high_score(current_score)
-#     else:
-#         print("Better luck next time!")
-#
-#
-# def get_high_score():
-#     high_score_time = 00.00
-#     try:
-#         high_score_file = open("high_score")
-#         high_score_time = int(high_score_file.read())
-#         high_score_file.close()
-#         print(f"High score: {high_score_time}")
-#     except IOError:
-#         print(f"No high score")
-#     except ValueError:
-#         print("Starting with no high score")
-#
-#     return high_score_time
-#
-#
-# def save_high_score(new_high_score):
-#     try:
-#         high_score_file = open("high_score")
-#         high_score_file.write(str(new_high_score))
-#         high_score_file.close()
-#     except IOError:
-#         print(f"Not able to save high score")
-#
 
 if __name__ == "__main__":
     main()
